@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Котомания AI Studio v3.0</title>
-    <!-- Скрипты стабильности -->
+    <title>Котомания AI Studio v4.0</title>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
@@ -12,204 +11,291 @@
     
     <style>
         :root { 
-            --brand: #db9d2b; 
-            --brand-gradient: linear-gradient(135deg, #db9d2b 0%, #f3e3ad 100%);
-            --bg: #0b0f1a; 
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.08);
-            --text-secondary: rgba(255, 255, 255, 0.5);
+            --primary: #4FA9FF; 
+            --primary-light: #E0F2FF;
+            --bg: #F0F9FF; 
+            --card: #FFFFFF;
+            --text: #1E293B;
+            --text-light: #64748B;
+            --brand: #db9d2b;
         }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         body { 
             background: var(--bg); 
-            color: #fff; 
+            color: var(--text); 
             margin: 0; 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             overflow-x: hidden;
         }
-        .app-container { max-width: 480px; margin: 0 auto; padding: 16px; min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 480px; margin: 0 auto; padding: 20px; min-height: 100vh; display: flex; flex-direction: column; }
         
         /* Header */
-        .header { text-align: center; margin-bottom: 24px; padding-top: 10px; }
-        .header h1 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; background: var(--brand-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .version-badge { font-size: 10px; opacity: 0.3; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; display: block; }
+        .header { text-align: center; margin-bottom: 24px; }
+        .header h1 { margin: 0; font-size: 24px; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
+        .version { font-size: 10px; color: var(--text-light); text-transform: uppercase; margin-top: 4px; }
 
-        /* Mode Toggle */
-        .mode-selector { display: flex; background: var(--card-bg); padding: 4px; border-radius: 14px; border: 1px solid var(--border); margin-bottom: 20px; }
-        .mode-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; background: transparent; color: var(--text-secondary); font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; items-center; justify-content: center; gap: 8px; }
-        .mode-btn.active { background: rgba(255, 255, 255, 0.07); color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        /* Navigation */
+        .nav-back { display: flex; align-items: center; gap: 8px; color: var(--primary); font-weight: 600; cursor: pointer; margin-bottom: 20px; }
 
-        /* Cards */
-        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 18px; margin-bottom: 16px; position: relative; overflow: hidden; }
-        .card::before { content: ''; position: absolute; top:0; left:0; right:0; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); }
-        .card-title { font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; display: block; }
+        /* Menu Grid */
+        .menu-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 10px; }
+        .menu-item { 
+            background: var(--card); 
+            border: 2px solid transparent;
+            border-radius: 24px; 
+            padding: 24px; 
+            display: flex; 
+            align-items: center; 
+            gap: 16px; 
+            box-shadow: 0 10px 20px rgba(79, 169, 255, 0.1); 
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .menu-item:active { transform: scale(0.96); box-shadow: 0 5px 10px rgba(79, 169, 255, 0.1); }
+        .menu-item.action { border-color: var(--primary); background: var(--primary-light); }
+        .menu-icon { font-size: 32px; }
+        .menu-text h3 { margin: 0; font-size: 18px; font-weight: 700; }
+        .menu-text p { margin: 4px 0 0; font-size: 13px; color: var(--text-light); }
 
-        /* Grid Elements */
-        .ratio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .ratio-item { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: all 0.2s; }
-        .ratio-item.active { border-color: var(--brand); background: rgba(219, 157, 43, 0.05); }
-        .ratio-box { border: 1.5px solid currentColor; border-radius: 3px; display: block; transition: all 0.2s; }
-        .ratio-item.active .ratio-box { color: var(--brand); }
-        .ratio-item:not(.active) .ratio-box { color: var(--text-secondary); }
-        .ratio-label { font-size: 11px; font-weight: 700; }
+        /* Section Cards */
+        .card { background: var(--card); border-radius: 24px; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); margin-bottom: 16px; }
+        .label { font-size: 11px; font-weight: 800; color: var(--text-light); text-transform: uppercase; margin-bottom: 12px; display: block; }
 
-        /* Inputs */
-        .model-select { width: 100%; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 12px; color: #fff; padding: 14px; font-size: 15px; font-weight: 500; appearance: none; cursor: pointer; }
-        .textarea-custom { width: 100%; background: transparent; border: none; color: #fff; padding: 0; font-size: 15px; line-height: 1.5; resize: none; min-height: 100px; }
-        .textarea-custom::placeholder { color: var(--text-secondary); }
+        /* Selection Buttons */
+        .select-group { display: flex; flex-direction: column; gap: 10px; }
+        .select-btn { 
+            background: #F8FAFC; 
+            border: 2px solid #F1F5F9; 
+            border-radius: 16px; 
+            padding: 16px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .select-btn.active { border-color: var(--primary); background: var(--primary-light); }
+        .select-btn h4 { margin: 0; font-size: 15px; font-weight: 700; }
+        .select-btn span { font-size: 11px; font-weight: 600; color: var(--text-light); }
+        .select-btn.active span { color: var(--primary); }
 
-        /* Bottom Action */
-        .footer-action { margin-top: auto; padding-top: 20px; }
-        .btn-generate { width: 100%; height: 64px; background: var(--brand-gradient); border: none; border-radius: 20px; color: #000; font-size: 17px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 10px 25px rgba(219, 157, 43, 0.2); transition: transform 0.1s, opacity 0.2s; }
-        .btn-generate:active { transform: scale(0.97); opacity: 0.9; }
-        .btn-generate span { text-transform: uppercase; letter-spacing: 0.5px; }
+        /* Ratio */
+        .ratio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .ratio-item { background: #F8FAFC; border: 2px solid #F1F5F9; border-radius: 14px; padding: 12px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; }
+        .ratio-item.active { border-color: var(--primary); background: var(--primary-light); }
+        .ratio-box { border: 2px solid currentColor; border-radius: 4px; }
 
-        /* Model Badge */
-        .badge-soon { position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.05); color: var(--brand); font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 6px; border: 1px solid rgba(219, 157, 43, 0.3); }
+        /* Input */
+        .textarea { width: 100%; border: 2px solid #F1F5F9; border-radius: 20px; padding: 16px; font-size: 15px; font-family: inherit; resize: none; min-height: 100px; }
+        .textarea:focus { border-color: var(--primary); }
 
-        /* Animations */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade { animation: fadeIn 0.4s ease-out forwards; }
+        /* Main Button */
+        .btn-go { 
+            width: 100%; 
+            padding: 20px; 
+            background: var(--primary); 
+            border: none; 
+            border-radius: 24px; 
+            color: #fff; 
+            font-size: 18px; 
+            font-weight: 800; 
+            box-shadow: 0 10px 25px rgba(79, 169, 255, 0.4); 
+            cursor: pointer; 
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        .btn-go:active { transform: scale(0.97); }
+
+        /* Mode Tabs */
+        .tabs { display: flex; background: #F1F5F9; padding: 4px; border-radius: 16px; margin-bottom: 20px; }
+        .tab-btn { flex: 1; padding: 10px; border-radius: 12px; border: none; background: transparent; color: var(--text-light); font-weight: 700; cursor: pointer; }
+        .tab-btn.active { background: #fff; color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+
+        @keyframes slideIn { from { opacity:0; transform: translateX(20px); } to { opacity:1; transform: translateX(0); } }
+        .view { animation: slideIn 0.3s ease-out forwards; }
     </style>
 </head>
 <body>
-    <div id="root">
-        <div style="text-align:center; padding-top:100px; font-family: sans-serif; color: #fff;">
-            <div style="font-size:40px; margin-bottom: 20px;">🎆</div>
-            <p style="opacity:0.5">Котомания AI Studio v3.0</p>
-            <p>Загрузка мощных нейросетей...</p>
-        </div>
-    </div>
+    <div id="root"></div>
 
     <script type="text/babel">
         const { useState, useEffect } = React;
 
         function App() {
-            const [mode, setMode] = useState('video'); // 'photo' or 'video'
-            const [model, setModel] = useState('luma');
+            const [view, setView] = useState('main'); // main, fun, banana, chat
+            const [funSubMode, setFunSubMode] = useState('photo'); // photo, video
+            const [model, setModel] = useState('photo_pro');
             const [ratio, setRatio] = useState('9:16');
             const [prompt, setPrompt] = useState('');
-            const [isLoading, setIsLoading] = useState(false);
 
             useEffect(() => {
                 if (window.Telegram && window.Telegram.WebApp) {
                     window.Telegram.WebApp.ready();
                     window.Telegram.WebApp.expand();
-                    // Set header color
-                    window.Telegram.WebApp.setHeaderColor('#0b0f1a');
+                    window.Telegram.WebApp.setHeaderColor('#F0F9FF');
                 }
             }, []);
 
-            const ratios = [
-                { id: '1:1', label: '1:1', w: 18, h: 18 },
-                { id: '9:16', label: '9:16', w: 14, h: 22 },
-                { id: '16:9', label: '16:9', w: 22, h: 14 },
-                { id: '4:3', label: '4:3', w: 18, h: 14 },
-                { id: '3:4', label: '3:4', w: 14, h: 18 },
-                { id: '2:3', label: '2:3', w: 12, h: 18 },
-            ];
-
-            const handleAction = () => {
-                const data = {
-                    type: mode,
-                    model: model,
-                    ratio: ratio,
-                    prompt: prompt,
-                    v: '3.0'
-                };
-                
+            const sendData = (payload) => {
                 if (window.Telegram && window.Telegram.WebApp) {
-                    window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
-                    window.Telegram.WebApp.sendData(JSON.stringify(data));
+                    window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+                    window.Telegram.WebApp.sendData(JSON.stringify(payload));
                     window.Telegram.WebApp.close();
                 } else {
-                    alert('Запуск вне Telegram:\n' + JSON.stringify(data, null, 2));
+                    alert('DEBUG:\n' + JSON.stringify(payload, null, 2));
                 }
             };
 
-            return (
-                <div className="app-container animate-fade">
+            const MainView = () => (
+                <div className="view">
                     <div className="header">
-                        <h1>КОТОМАНИЯ STUDIO</h1>
-                        <span className="version-badge">Premium Creation v3.0</span>
+                        <h1>КОТОМАНИЯ v4.0</h1>
+                        <p className="version">Яркое творчество каждый день 🦄</p>
                     </div>
+                    <div className="menu-grid">
+                        <div className="menu-item action" onClick={() => setView('fun')}>
+                            <span className="menu-icon">🎉</span>
+                            <div className="menu-text">
+                                <h3>ВЕСЕЛЬЕ</h3>
+                                <p>Фото и Видео шедевры</p>
+                            </div>
+                        </div>
+                        <div className="menu-item" onClick={() => setView('banana')}>
+                            <span className="menu-icon">🍌</span>
+                            <div className="menu-text">
+                                <h3>NANO BANANA</h3>
+                                <p>Твои любимые макаки</p>
+                            </div>
+                        </div>
+                        <div className="menu-item" onClick={() => setView('chat')}>
+                            <span className="menu-icon">💬</span>
+                            <div className="menu-text">
+                                <h3>CHAT GPT</h3>
+                                <p>Умный собеседник</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
 
-                    <div className="mode-selector">
-                        <button 
-                            className={`mode-btn ${mode === 'video' ? 'active' : ''}`}
-                            onClick={() => { setMode('video'); setModel('luma'); }}
-                        >
-                            🎥 Видео
-                        </button>
-                        <button 
-                            className={`mode-btn ${mode === 'photo' ? 'active' : ''}`}
-                            onClick={() => { setMode('photo'); setModel('flux'); }}
-                        >
-                            🖼 Фото
-                        </button>
+            const FunView = () => (
+                <div className="view">
+                    <div className="nav-back" onClick={() => setView('main')}>← Назад в меню</div>
+                    <div className="tabs">
+                        <button className={`tab-btn ${funSubMode === 'photo' ? 'active' : ''}`} onClick={() => {setFunSubMode('photo'); setModel('photo_pro');}}>🖼 ФОТО</button>
+                        <button className={`tab-btn ${funSubMode === 'video' ? 'active' : ''}`} onClick={() => {setFunSubMode('video'); setModel('video_pro');}}>🎥 ВИДЕО</button>
                     </div>
 
                     <div className="card">
-                        <span className="card-title">Нейросеть</span>
-                        <div style={{position:'relative'}}>
-                            <select 
-                                className="model-select" 
-                                value={model} 
-                                onChange={e => setModel(e.target.value)}
-                            >
-                                {mode === 'video' ? (
-                                    <>
-                                        <option value="luma">Luma Dream Machine</option>
-                                        <option value="banana">Banana PRO Video</option>
-                                        <option value="kling">Kling 2.5 (Soon)</option>
-                                    </>
-                                ) : (
-                                    <>
-                                        <option value="flux">Flux.1 Schnell</option>
-                                        <option value="ideogram">Ideogram v3</option>
-                                        <option value="midjourney">Midjourney v6.1</option>
-                                    </>
-                                )}
-                            </select>
-                            {model === 'kling' && <span className="badge-soon">BETA</span>}
+                        <span className="label">Выбери качество</span>
+                        <div className="select-group">
+                            {funSubMode === 'photo' ? (
+                                <>
+                                    <div className={`select-btn ${model === 'photo_std' ? 'active' : ''}`} onClick={() => setModel('photo_std')}>
+                                        <h4>Фото Стандарт Качество</h4>
+                                        <span>(4.5)</span>
+                                    </div>
+                                    <div className={`select-btn ${model === 'photo_pro' ? 'active' : ''}`} onClick={() => setModel('photo_pro')}>
+                                        <h4>Фото PRO Качество</h4>
+                                        <span>(5.0 Lite)</span>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    <div className={`select-btn ${model === 'video_std' ? 'active' : ''}`} onClick={() => setModel('video_std')}>
+                                        <h4>Видео Стандарт Качество</h4>
+                                        <span>(Seedance 1.0)</span>
+                                    </div>
+                                    <div className={`select-btn ${model === 'video_pro' ? 'active' : ''}`} onClick={() => setModel('video_pro')}>
+                                        <h4>Видео PRO Качество</h4>
+                                        <span>(Seedance 1.5)</span>
+                                    </div>
+                                </>
+                            )}
                         </div>
                     </div>
 
                     <div className="card">
-                        <span className="card-title">Формат изображения</span>
+                        <span className="label">Формат</span>
                         <div className="ratio-grid">
-                            {ratios.map(r => (
-                                <div 
-                                    key={r.id} 
-                                    className={`ratio-item ${ratio === r.id ? 'active' : ''}`}
-                                    onClick={() => setRatio(r.id)}
-                                >
+                            {[
+                                {id: '1:1', w: 16, h: 16},
+                                {id: '9:16', w: 12, h: 20},
+                                {id: '16:9', w: 20, h: 12},
+                                {id: '4:3', w: 16, h: 12},
+                                {id: '3:4', w: 12, h: 16}
+                            ].map(r => (
+                                <div key={r.id} className={`ratio-item ${ratio === r.id ? 'active' : ''}`} onClick={() => setRatio(r.id)}>
                                     <div className="ratio-box" style={{width: r.w, height: r.h}}></div>
-                                    <span className="ratio-label">{r.label}</span>
+                                    <span style={{fontSize: 10, fontWeight: 700}}>{r.id}</span>
                                 </div>
                             ))}
                         </div>
                     </div>
 
-                    <div className="card" style={{flex: 1}}>
-                        <span className="card-title">Запрос (подсказка)</span>
+                    <div className="card">
                         <textarea 
-                            className="textarea-custom"
-                            placeholder={mode === 'video' ? "Опишите сюжет для видео..." : "Что изобразить на картинке?"}
+                            className="textarea" 
+                            placeholder="Опиши свою идею..."
                             value={prompt}
-                            onChange={e => setPrompt(e.target.value)}
-                        ></textarea>
+                            onChange={(e) => setPrompt(e.target.value)}
+                        />
                     </div>
 
-                    <div className="footer-action">
-                        <button className="btn-generate" onClick={handleAction}>
-                            <span>Создать {mode === 'video' ? 'Видео' : 'Фото'}</span>
-                            <div style={{fontSize: 20}}>🚀</div>
-                        </button>
-                        <p style={{textAlign:'center', fontSize:10, opacity:0.2, marginTop:16, letterSpacing:1}}>
-                            SECURE AI PROCESSING • @CATAMANIABOT
-                        </p>
+                    <button className="btn-go" onClick={() => sendData({type: funSubMode, model, ratio, prompt, v: '4.0'})}>
+                        <span>Запустить магию! 🚀</span>
+                    </button>
+                </div>
+            );
+
+            const BananaView = () => (
+                <div className="view">
+                    <div className="nav-back" onClick={() => setView('main')}>← Назад</div>
+                    <div className="card">
+                        <span className="label">Модели Banana</span>
+                        <div className="select-group">
+                            <div className={`select-btn ${model === 'banana_nano' ? 'active' : ''}`} onClick={() => setModel('banana_nano')}>
+                                <h4>Nano Banana</h4>
+                                <span>Базовая модель</span>
+                            </div>
+                            <div className={`select-btn ${model === 'banana_pro' ? 'active' : ''}`} onClick={() => setModel('banana_pro')}>
+                                <h4>Nano Banana PRO</h4>
+                                <span>Улучшенная версия</span>
+                            </div>
+                        </div>
                     </div>
+                    <div className="card">
+                        <textarea className="textarea" placeholder="Что нарисует банан?" value={prompt} onChange={(e) => setPrompt(e.target.value)} />
+                    </div>
+                    <button className="btn-go" onClick={() => sendData({type: 'banana', model, prompt, v: '4.0'})}>
+                        <span>Начать генерацию 🍌</span>
+                    </button>
+                </div>
+            );
+
+            const ChatView = () => (
+                <div className="view">
+                    <div className="nav-back" onClick={() => setView('main')}>← Назад</div>
+                    <div className="card">
+                        <span className="label">ChatGPT</span>
+                        <p style={{fontSize: 14, color: 'var(--text-light)', margin: '0 0 16px'}}>Задай любой вопрос умному помощнику.</p>
+                        <textarea className="textarea" placeholder="Твой вопрос..." value={prompt} onChange={(e) => setPrompt(e.target.value)} />
+                    </div>
+                    <button className="btn-go" onClick={() => sendData({type: 'chat', model: 'chatgpt', prompt, v: '4.0'})}>
+                        <span>Спросить ChatGPT 💬</span>
+                    </button>
+                </div>
+            );
+
+            return (
+                <div className="container">
+                    {view === 'main' && <MainView />}
+                    {view === 'fun' && <FunView />}
+                    {view === 'banana' && <BananaView />}
+                    {view === 'chat' && <ChatView />}
                 </div>
             );
         }
