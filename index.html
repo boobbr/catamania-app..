@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Котомания AI Studio v4.0</title>
+    <title>Котомания AI Studio v4.2</title>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
@@ -17,7 +17,6 @@
             --card: #FFFFFF;
             --text: #1E293B;
             --text-light: #64748B;
-            --brand: #db9d2b;
         }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         body { 
@@ -29,93 +28,61 @@
         }
         .container { max-width: 480px; margin: 0 auto; padding: 20px; min-height: 100vh; display: flex; flex-direction: column; }
         
-        /* Header */
         .header { text-align: center; margin-bottom: 24px; }
         .header h1 { margin: 0; font-size: 24px; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
         .version { font-size: 10px; color: var(--text-light); text-transform: uppercase; margin-top: 4px; }
 
-        /* Navigation */
         .nav-back { display: flex; align-items: center; gap: 8px; color: var(--primary); font-weight: 600; cursor: pointer; margin-bottom: 20px; }
 
-        /* Menu Grid */
         .menu-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 10px; }
         .menu-item { 
             background: var(--card); 
             border: 2px solid transparent;
-            border-radius: 24px; 
-            padding: 24px; 
-            display: flex; 
-            align-items: center; 
-            gap: 16px; 
+            border-radius: 24px; padding: 24px; 
+            display: flex; align-items: center; gap: 16px; 
             box-shadow: 0 10px 20px rgba(79, 169, 255, 0.1); 
-            cursor: pointer;
-            transition: all 0.2s;
+            cursor: pointer; transition: all 0.2s;
         }
-        .menu-item:active { transform: scale(0.96); box-shadow: 0 5px 10px rgba(79, 169, 255, 0.1); }
+        .menu-item:active { transform: scale(0.96); }
         .menu-item.action { border-color: var(--primary); background: var(--primary-light); }
         .menu-icon { font-size: 32px; }
         .menu-text h3 { margin: 0; font-size: 18px; font-weight: 700; }
         .menu-text p { margin: 4px 0 0; font-size: 13px; color: var(--text-light); }
 
-        /* Section Cards */
         .card { background: var(--card); border-radius: 24px; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); margin-bottom: 16px; }
         .label { font-size: 11px; font-weight: 800; color: var(--text-light); text-transform: uppercase; margin-bottom: 12px; display: block; }
 
-        /* Selection Buttons */
         .select-group { display: flex; flex-direction: column; gap: 10px; }
         .select-btn { 
-            background: #F8FAFC; 
-            border: 2px solid #F1F5F9; 
-            border-radius: 16px; 
-            padding: 16px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            cursor: pointer;
-            transition: all 0.2s;
+            background: #F8FAFC; border: 2px solid #F1F5F9; border-radius: 16px; 
+            padding: 16px; display: flex; justify-content: space-between; align-items: center; 
+            cursor: pointer; transition: all 0.2s;
         }
         .select-btn.active { border-color: var(--primary); background: var(--primary-light); }
         .select-btn h4 { margin: 0; font-size: 15px; font-weight: 700; }
         .select-btn span { font-size: 11px; font-weight: 600; color: var(--text-light); }
-        .select-btn.active span { color: var(--primary); }
 
-        /* Ratio */
         .ratio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
         .ratio-item { background: #F8FAFC; border: 2px solid #F1F5F9; border-radius: 14px; padding: 12px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; }
         .ratio-item.active { border-color: var(--primary); background: var(--primary-light); }
         .ratio-box { border: 2px solid currentColor; border-radius: 4px; }
 
-        /* Input */
         .textarea { width: 100%; border: 2px solid #F1F5F9; border-radius: 20px; padding: 16px; font-size: 15px; font-family: inherit; resize: none; min-height: 100px; }
-        .textarea:focus { border-color: var(--primary); }
+        .textarea:focus { border-color: var(--primary); background: #fff; }
 
-        /* Main Button */
         .btn-go { 
-            width: 100%; 
-            padding: 20px; 
-            background: var(--primary); 
-            border: none; 
-            border-radius: 24px; 
-            color: #fff; 
-            font-size: 18px; 
-            font-weight: 800; 
-            box-shadow: 0 10px 25px rgba(79, 169, 255, 0.4); 
-            cursor: pointer; 
-            margin-top: auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
+            width: 100%; padding: 20px; background: var(--primary); border: none; border-radius: 24px; 
+            color: #fff; font-size: 18px; font-weight: 800; box-shadow: 0 10px 25px rgba(79, 169, 255, 0.4); 
+            cursor: pointer; margin-top: auto; display: flex; align-items: center; justify-content: center; gap: 12px;
         }
         .btn-go:active { transform: scale(0.97); }
 
-        /* Mode Tabs */
         .tabs { display: flex; background: #F1F5F9; padding: 4px; border-radius: 16px; margin-bottom: 20px; }
         .tab-btn { flex: 1; padding: 10px; border-radius: 12px; border: none; background: transparent; color: var(--text-light); font-weight: 700; cursor: pointer; }
         .tab-btn.active { background: #fff; color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
 
-        @keyframes slideIn { from { opacity:0; transform: translateX(20px); } to { opacity:1; transform: translateX(0); } }
-        .view { animation: slideIn 0.3s ease-out forwards; }
+        .view-anim { animation: slideIn 0.3s ease-out forwards; flex: 1; display: flex; flex-direction: column; }
+        @keyframes slideIn { from { opacity:0; transform: translateX(10px); } to { opacity:1; transform: translateX(0); } }
     </style>
 </head>
 <body>
@@ -124,14 +91,163 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
+        // Sub-components defined OUTSIDE to prevent remounting
+        const MainView = ({ setView }) => (
+            <div className="view-anim">
+                <div className="header">
+                    <h1>КОТОМАНИЯ v4.2</h1>
+                    <p className="version">Яркое творчество без границ 🦄</p>
+                </div>
+                <div className="menu-grid">
+                    <div className="menu-item action" onClick={() => setView('fun')}>
+                        <span className="menu-icon">🎉</span>
+                        <div className="menu-text">
+                            <h3>ВЕСЕЛЬЕ</h3>
+                            <p>Фото и Видео шедевры</p>
+                        </div>
+                    </div>
+                    <div className="menu-item" onClick={() => setView('banana')}>
+                        <span className="menu-icon">🍌</span>
+                        <div className="menu-text">
+                            <h3>NANO BANANA</h3>
+                            <p>Твои любимые модели</p>
+                        </div>
+                    </div>
+                    <div className="menu-item" onClick={() => setView('chat')}>
+                        <span className="menu-icon">💬</span>
+                        <div className="menu-text">
+                            <h3>CHAT GPT</h3>
+                            <p>Умный собеседник</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+
+        const FunView = ({ setView, mode, setMode, model, setModel, ratio, setRatio, quality, setQuality, duration, setDuration, prompt, setPrompt, onGo }) => (
+            <div className="view-anim">
+                <div className="nav-back" onClick={() => setView('main')}>← Назад в меню</div>
+                <div className="tabs">
+                    <button className={`tab-btn ${mode === 'photo' ? 'active' : ''}`} onClick={() => {setMode('photo'); setModel('photo_pro');}}>🖼 ФОТО</button>
+                    <button className={`tab-btn ${mode === 'video' ? 'active' : ''}`} onClick={() => {setMode('video'); setModel('video_pro');}}>🎥 ВИДЕО</button>
+                </div>
+
+                <div className="card">
+                    <span className="label">Выбери качество</span>
+                    <div className="select-group">
+                        {mode === 'photo' ? (
+                            <>
+                                <div className={`select-btn ${model === 'photo_std' ? 'active' : ''}`} onClick={() => setModel('photo_std')}>
+                                    <h4>Фото Стандарт Качество</h4>
+                                </div>
+                                <div className={`select-btn ${model === 'photo_pro' ? 'active' : ''}`} onClick={() => setModel('photo_pro')}>
+                                    <h4>Фото PRO Качество</h4>
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <div className={`select-btn ${model === 'video_std' ? 'active' : ''}`} onClick={() => setModel('video_std')}>
+                                    <h4>Видео Стандарт Качество</h4>
+                                </div>
+                                <div className={`select-btn ${model === 'video_pro' ? 'active' : ''}`} onClick={() => setModel('video_pro')}>
+                                    <h4>Видео PRO Качество</h4>
+                                </div>
+                            </>
+                        )}
+                    </div>
+                </div>
+
+                {mode === 'video' && (
+                    <div className="card">
+                        <span className="label">Настройки видео</span>
+                        <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:10}}>
+                            <div>
+                                <span style={{fontSize:10, opacity:0.5, marginBottom:4, display:'block'}}>РАЗРЕШЕНИЕ</span>
+                                <div className="tabs" style={{marginBottom:0}}>
+                                    <button className={`tab-btn ${quality === '480p' ? 'active' : ''}`} onClick={() => setQuality('480p')}>480p</button>
+                                    <button className={`tab-btn ${quality === '720p' ? 'active' : ''}`} onClick={() => setQuality('720p')}>720p</button>
+                                </div>
+                            </div>
+                            <div>
+                                <span style={{fontSize:10, opacity:0.5, marginBottom:4, display:'block'}}>ВРЕМЯ</span>
+                                <div className="tabs" style={{marginBottom:0}}>
+                                    <button className={`tab-btn ${duration === '5' ? 'active' : ''}`} onClick={() => setDuration('5')}>5с</button>
+                                    <button className={`tab-btn ${duration === '10' ? 'active' : ''}`} onClick={() => setDuration('10')}>10с</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                <div className="card">
+                    <span className="label">Формат</span>
+                    <div className="ratio-grid">
+                        {['1:1', '9:16', '16:9', '4:3', '3:4'].map(r => (
+                            <div key={r} className={`ratio-item ${ratio === r ? 'active' : ''}`} onClick={() => setRatio(r)}>
+                                <span style={{fontSize: 12, fontWeight: 700}}>{r}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="card">
+                    <textarea className="textarea" placeholder="Опиши свою идею..." value={prompt} onChange={(e) => setPrompt(e.target.value)} />
+                </div>
+
+                <button className="btn-go" onClick={() => onGo({type: mode, model, ratio, quality, duration, prompt})}>
+                    <span>Запустить {mode === 'photo' ? 'Фото' : 'Видео'} 🚀</span>
+                </button>
+            </div>
+        );
+
+        const BananaView = ({ setView, model, setModel, prompt, setPrompt, onGo }) => (
+            <div className="view-anim">
+                <div className="nav-back" onClick={() => setView('main')}>← Назад</div>
+                <div className="card">
+                    <span className="label">Модели Banana</span>
+                    <div className="select-group">
+                        <div className={`select-btn ${model === 'banana_nano' ? 'active' : ''}`} onClick={() => setModel('banana_nano')}>
+                            <h4>Nano Banana</h4>
+                            <span>Базовая</span>
+                        </div>
+                        <div className={`select-btn ${model === 'banana_pro' ? 'active' : ''}`} onClick={() => setModel('banana_pro')}>
+                            <h4>Nano Banana PRO</h4>
+                            <span>Улучшенная</span>
+                        </div>
+                    </div>
+                </div>
+                <div className="card">
+                    <textarea className="textarea" placeholder="Запрос для банана..." value={prompt} onChange={(e) => setPrompt(e.target.value)} />
+                </div>
+                <button className="btn-go" onClick={() => onGo({type: 'banana', model, prompt})}>
+                    <span>Создать Банан 🍌</span>
+                </button>
+            </div>
+        );
+
+        const ChatView = ({ setView, prompt, setPrompt, onGo }) => (
+            <div className="view-anim">
+                <div className="nav-back" onClick={() => setView('main')}>← Назад</div>
+                <div className="card">
+                    <span className="label">ChatGPT</span>
+                    <textarea className="textarea" placeholder="Твой вопрос..." value={prompt} onChange={(e) => setPrompt(e.target.value)} />
+                </div>
+                <button className="btn-go" onClick={() => onGo({type: 'chat', model: 'chatgpt', prompt})}>
+                    <span>Спросить ChatGPT 💬</span>
+                </button>
+            </div>
+        );
+
         function App() {
-            const [view, setView] = useState('main'); // main, fun, banana, chat
-            const [funSubMode, setFunSubMode] = useState('photo'); // photo, video
+            const [view, setView] = useState('main');
+            const [mode, setMode] = useState('photo');
             const [model, setModel] = useState('photo_pro');
             const [ratio, setRatio] = useState('9:16');
             const [quality, setQuality] = useState('720p');
             const [duration, setDuration] = useState('5');
-            const [prompt, setPrompt] = useState('');
+            const [promptFun, setPromptFun] = useState('');
+            const [promptBanana, setPromptBanana] = useState('');
+            const [promptChat, setPromptChat] = useState('');
 
             useEffect(() => {
                 if (window.Telegram && window.Telegram.WebApp) {
@@ -141,185 +257,34 @@
                 }
             }, []);
 
-            const sendData = (payload) => {
+            const handleGo = (data) => {
+                const payload = { ...data, v: '4.2' };
                 if (window.Telegram && window.Telegram.WebApp) {
                     window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
                     window.Telegram.WebApp.sendData(JSON.stringify(payload));
                     window.Telegram.WebApp.close();
                 } else {
-                    alert('DEBUG:\n' + JSON.stringify(payload, null, 2));
+                    alert('UI TEST:\n' + JSON.stringify(payload, null, 2));
                 }
             };
 
-            const MainView = () => (
-                <div className="view">
-                    <div className="header">
-                        <h1>КОТОМАНИЯ v4.0</h1>
-                        <p className="version">Яркое творчество каждый день 🦄</p>
-                    </div>
-                    <div className="menu-grid">
-                        <div className="menu-item action" onClick={() => setView('fun')}>
-                            <span className="menu-icon">🎉</span>
-                            <div className="menu-text">
-                                <h3>ВЕСЕЛЬЕ</h3>
-                                <p>Фото и Видео шедевры</p>
-                            </div>
-                        </div>
-                        <div className="menu-item" onClick={() => setView('banana')}>
-                            <span className="menu-icon">🍌</span>
-                            <div className="menu-text">
-                                <h3>NANO BANANA</h3>
-                                <p>Твои любимые макаки</p>
-                            </div>
-                        </div>
-                        <div className="menu-item" onClick={() => setView('chat')}>
-                            <span className="menu-icon">💬</span>
-                            <div className="menu-text">
-                                <h3>CHAT GPT</h3>
-                                <p>Умный собеседник</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            );
-
-            const FunView = () => (
-                <div className="view">
-                    <div className="nav-back" onClick={() => setView('main')}>← Назад в меню</div>
-                    <div className="tabs">
-                        <button className={`tab-btn ${funSubMode === 'photo' ? 'active' : ''}`} onClick={() => {setFunSubMode('photo'); setModel('photo_pro');}}>🖼 ФОТО</button>
-                        <button className={`tab-btn ${funSubMode === 'video' ? 'active' : ''}`} onClick={() => {setFunSubMode('video'); setModel('video_pro');}}>🎥 ВИДЕО</button>
-                    </div>
-
-                    <div className="card">
-                        <span className="label">Выбери качество</span>
-                        <div className="select-group">
-                            {funSubMode === 'photo' ? (
-                                <>
-                                    <div className={`select-btn ${model === 'photo_std' ? 'active' : ''}`} onClick={() => setModel('photo_std')}>
-                                        <h4>Фото Стандарт Качество</h4>
-                                        <span>(4.5)</span>
-                                    </div>
-                                    <div className={`select-btn ${model === 'photo_pro' ? 'active' : ''}`} onClick={() => setModel('photo_pro')}>
-                                        <h4>Фото PRO Качество</h4>
-                                        <span>(5.0 Lite)</span>
-                                    </div>
-                                </>
-                            ) : (
-                                <>
-                                    <div className={`select-btn ${model === 'video_std' ? 'active' : ''}`} onClick={() => setModel('video_std')}>
-                                        <h4>Видео Стандарт Качество</h4>
-                                        <span>(Seedance 1.0)</span>
-                                    </div>
-                                    <div className={`select-btn ${model === 'video_pro' ? 'active' : ''}`} onClick={() => setModel('video_pro')}>
-                                        <h4>Видео PRO Качество</h4>
-                                        <span>(Seedance 1.5)</span>
-                                    </div>
-                                </>
-                            )}
-                        </div>
-                    </div>
-
-                    {funSubMode === 'video' && (
-                        <div className="card">
-                            <span className="label">Настройки видео</span>
-                            <div className="grid-2" style={{gap:10, display:'grid', gridTemplateColumns:'1fr 1fr'}}>
-                                <div>
-                                    <span style={{fontSize:10, opacity:0.5, marginBottom:4, display:'block'}}>КАЧЕСТВО</span>
-                                    <div className="tabs" style={{marginBottom:0}}>
-                                        <button className={`tab-btn ${quality === '480p' ? 'active' : ''}`} onClick={() => setQuality('480p')}>480p</button>
-                                        <button className={`tab-btn ${quality === '720p' ? 'active' : ''}`} onClick={() => setQuality('720p')}>720p</button>
-                                    </div>
-                                </div>
-                                <div>
-                                    <span style={{fontSize:10, opacity:0.5, marginBottom:4, display:'block'}}>ДЛИТЕЛЬНОСТЬ</span>
-                                    <div className="tabs" style={{marginBottom:0}}>
-                                        <button className={`tab-btn ${duration === '5' ? 'active' : ''}`} onClick={() => setDuration('5')}>5 сек</button>
-                                        <button className={`tab-btn ${duration === '10' ? 'active' : ''}`} onClick={() => setDuration('10')}>10 сек</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    <div className="card">
-                        <span className="label">Формат</span>
-                        <div className="ratio-grid">
-                            {[
-                                {id: '1:1', w: 16, h: 16},
-                                {id: '9:16', w: 12, h: 20},
-                                {id: '16:9', w: 20, h: 12},
-                                {id: '4:3', w: 16, h: 12},
-                                {id: '3:4', w: 12, h: 16}
-                            ].map(r => (
-                                <div key={r.id} className={`ratio-item ${ratio === r.id ? 'active' : ''}`} onClick={() => setRatio(r.id)}>
-                                    <div className="ratio-box" style={{width: r.w, height: r.h}}></div>
-                                    <span style={{fontSize: 10, fontWeight: 700}}>{r.id}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="card">
-                        <textarea 
-                            className="textarea" 
-                            placeholder="Опиши свою идею..."
-                            value={prompt}
-                            onChange={(e) => setPrompt(e.target.value)}
-                        />
-                    </div>
-
-                    <button className="btn-go" onClick={() => sendData({type: funSubMode, model, ratio, quality, duration, prompt, v: '4.1'})}>
-                        <span>Запустить магию! 🚀</span>
-                    </button>
-                </div>
-            );
-
-            const BananaView = () => (
-                <div className="view">
-                    <div className="nav-back" onClick={() => setView('main')}>← Назад</div>
-                    <div className="card">
-                        <span className="label">Модели Banana</span>
-                        <div className="select-group">
-                            <div className={`select-btn ${model === 'banana_nano' ? 'active' : ''}`} onClick={() => setModel('banana_nano')}>
-                                <h4>Nano Banana</h4>
-                                <span>Базовая модель</span>
-                            </div>
-                            <div className={`select-btn ${model === 'banana_pro' ? 'active' : ''}`} onClick={() => setModel('banana_pro')}>
-                                <h4>Nano Banana PRO</h4>
-                                <span>Улучшенная версия</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="card">
-                        <textarea className="textarea" placeholder="Что нарисует банан?" value={prompt} onChange={(e) => setPrompt(e.target.value)} />
-                    </div>
-                    <button className="btn-go" onClick={() => sendData({type: 'banana', model, prompt, v: '4.0'})}>
-                        <span>Начать генерацию 🍌</span>
-                    </button>
-                </div>
-            );
-
-            const ChatView = () => (
-                <div className="view">
-                    <div className="nav-back" onClick={() => setView('main')}>← Назад</div>
-                    <div className="card">
-                        <span className="label">ChatGPT</span>
-                        <p style={{fontSize: 14, color: 'var(--text-light)', margin: '0 0 16px'}}>Задай любой вопрос умному помощнику.</p>
-                        <textarea className="textarea" placeholder="Твой вопрос..." value={prompt} onChange={(e) => setPrompt(e.target.value)} />
-                    </div>
-                    <button className="btn-go" onClick={() => sendData({type: 'chat', model: 'chatgpt', prompt, v: '4.0'})}>
-                        <span>Спросить ChatGPT 💬</span>
-                    </button>
-                </div>
-            );
-
             return (
                 <div className="container">
-                    {view === 'main' && <MainView />}
-                    {view === 'fun' && <FunView />}
-                    {view === 'banana' && <BananaView />}
-                    {view === 'chat' && <ChatView />}
+                    {view === 'main' && <MainView setView={setView} />}
+                    {view === 'fun' && (
+                        <FunView 
+                            setView={setView} mode={mode} setMode={setMode} 
+                            model={model} setModel={setModel} ratio={ratio} setRatio={setRatio}
+                            quality={quality} setQuality={setQuality} duration={duration} setDuration={setDuration}
+                            prompt={promptFun} setPrompt={setPromptFun} onGo={handleGo}
+                        />
+                    )}
+                    {view === 'banana' && (
+                        <BananaView setView={setView} model={model} setModel={setModel} prompt={promptBanana} setPrompt={setPromptBanana} onGo={handleGo} />
+                    )}
+                    {view === 'chat' && (
+                        <ChatView setView={setView} prompt={promptChat} setPrompt={setPromptChat} onGo={handleGo} />
+                    )}
                 </div>
             );
         }
