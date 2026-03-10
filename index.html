@@ -9,7 +9,6 @@
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
@@ -18,86 +17,42 @@
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
-                        brand: {
-                            50: '#fdf8ed',
-                            100: '#f9f1d5',
-                            200: '#f3e3ad',
-                            300: '#ebcf7b',
-                            400: '#e5bb52',
-                            500: '#db9d2b',
-                            600: '#c37e21',
-                            700: '#a25f1e',
-                            800: '#854b20',
-                            900: '#71401f',
-                        }
+                        brand: { 50: '#fdf8ed', 100: '#f9f1d5', 200: '#f3e3ad', 300: '#ebcf7b', 400: '#e5bb52', 500: '#db9d2b', 600: '#c37e21', 700: '#a25f1e', 800: '#854b20', 900: '#71401f' }
                     }
                 }
             }
         }
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            const root = document.getElementById('root');
+            if (root) {
+                root.style.background = '#7f1d1d'; // Dark red
+                root.innerHTML = `<div style="padding: 24px; color: white;">
+                    <h2 style="margin-top:0">🚨 Ошибка запуска</h2>
+                    <p style="opacity: 0.8">${msg}</p>
+                    <p style="font-size: 11px; opacity: 0.5">Линия: ${lineNo}</p>
+                    <button onclick="location.reload()" style="margin-top:20px; padding:10px 20px; border-radius:10px; border:none; background:white; color:black; font-weight:bold;">Перезагрузить</button>
+                </div>`;
+            }
+            return false;
+        };
     </script>
     <style>
-        body {
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-            color: #f8fafc;
-            overflow-x: hidden;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .glass {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .glass-active {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        .gradient-border {
-            position: relative;
-        }
-        .gradient-border::after {
-            content: '';
-            position: absolute;
-            inset: -1px;
-            background: linear-gradient(45deg, #db9d2b, #f3e3ad);
-            z-index: -1;
-            border-radius: inherit;
-        }
-        input, textarea, select {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            outline: none;
-            transition: all 0.2s;
-        }
-        input:focus, textarea:focus {
-            border-color: #db9d2b;
-            background: rgba(255, 255, 255, 0.1);
-        }
-        .slider-thumb::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
-            background: #db9d2b;
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 0 10px rgba(219, 157, 43, 0.5);
-        }
+        body { background: #0f172a; color: #f8fafc; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .glass-active { background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); }
+        input, textarea, select { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); outline: none; }
+        .slider-thumb::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; background: #db9d2b; border-radius: 50%; cursor: pointer; }
         ::-webkit-scrollbar { width: 0; }
     </style>
 </head>
 <body>
-    <div id="root" style="color: white; text-align: center; padding-top: 50px;">
-        🚀 Загрузка AI Студии... Если это сообщение висит долго, значит что-то пошло не так.
+    <div id="root" style="color: white; text-align: center; padding-top: 100px; font-family: sans-serif;">
+        <div style="font-size: 40px; margin-bottom: 20px;">🚀</div>
+        Загрузка AI Студии...
     </div>
 
     <script type="text/babel">
-        // Debug: check if libraries are loaded
-        console.log('React:', typeof React);
-        console.log('ReactDOM:', typeof ReactDOM);
-        console.log('FramerMotion:', typeof FramerMotion);
-
         const { useState, useEffect } = React;
-        const Framer = window.FramerMotion || {};
-        const { motion, AnimatePresence } = Framer;
 
         const App = () => {
             const [tab, setTab] = useState('models');
@@ -107,15 +62,16 @@
             const [quality, setQuality] = useState('standard');
             const [cfg, setCfg] = useState(0.5);
             const [mode, setMode] = useState('text');
-            const [balance, setBalance] = useState(500);
-            const [price, setPrice] = useState(90);
+            const [balance, setBalance] = useState(15);
+            const [price, setPrice] = useState(45);
+            const [prompt, setPrompt] = useState('');
 
-            // Mock Telegram integration
             useEffect(() => {
                 if (window.Telegram && window.Telegram.WebApp) {
                     window.Telegram.WebApp.ready();
                     window.Telegram.WebApp.expand();
                 }
+                setTimeout(() => lucide.createIcons(), 100);
             }, []);
 
             const ratios = [
@@ -126,239 +82,120 @@
                 { id: '3:4', label: '3:4', w: 30, h: 40 },
             ];
 
+            const handleGenerate = () => {
+                if (window.Telegram && window.Telegram.WebApp) {
+                    window.Telegram.WebApp.sendData(JSON.stringify({ model, ratio, duration, quality, cfg, mode, prompt }));
+                    window.Telegram.WebApp.close();
+                } else {
+                    alert('Запущено вне Telegram. Данные: ' + JSON.stringify({model, prompt}));
+                }
+            };
+
             return (
                 <div className="min-h-screen p-4 pb-24 font-sans max-w-md mx-auto">
-                    {/* Header Tabs */}
                     <div className="flex p-1 mb-6 glass rounded-2xl">
-                        <button 
-                            onClick={() => setTab('models')}
-                            className={`flex-1 py-2 rounded-xl text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2 ${tab === 'models' ? 'bg-white/10 shadow-lg' : 'opacity-60'}`}
-                        >
-                            <i data-lucide="layout-grid" className="w-4 h-4"></i> Модели
+                        <button onClick={() => setTab('models')} className={`flex-1 py-2 rounded-xl text-sm font-medium transition-all ${tab === 'models' ? 'bg-white/10 shadow-lg' : 'opacity-60'}`}>
+                            Модели
                         </button>
-                        <button 
-                            onClick={() => setTab('profile')}
-                            className={`flex-1 py-2 rounded-xl text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2 ${tab === 'profile' ? 'bg-white/10 shadow-lg' : 'opacity-60'}`}
-                        >
-                            <i data-lucide="user" className="w-4 h-4"></i> Профиль
+                        <button onClick={() => setTab('profile')} className={`flex-1 py-2 rounded-xl text-sm font-medium transition-all ${tab === 'profile' ? 'bg-white/10 shadow-lg' : 'opacity-60'}`}>
+                            Профиль
                         </button>
                     </div>
 
-                    <AnimatePresence mode="wait">
-                        {tab === 'models' ? (
-                            <motion.div 
-                                key="models-tab"
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -10 }}
-                                className="space-y-6"
-                            >
-                                {/* Stats Row */}
-                                <div className="grid grid-cols-2 gap-3">
-                                    <div className="glass p-3 rounded-2xl flex items-center gap-3">
-                                        <div className="bg-emerald-500/20 p-2 rounded-xl">
-                                            <i data-lucide="battery" className="w-5 h-5 text-emerald-400"></i>
-                                        </div>
-                                        <div>
-                                            <p className="text-[10px] opacity-60 uppercase tracking-wider">Баланс</p>
-                                            <p className="font-bold text-lg leading-tight">{balance} ❤️</p>
-                                        </div>
-                                    </div>
-                                    <div className="glass p-3 rounded-2xl flex items-center gap-3">
-                                        <div className="bg-brand-500/20 p-2 rounded-xl">
-                                            <i data-lucide="tag" className="w-5 h-5 text-brand-400"></i>
-                                        </div>
-                                        <div>
-                                            <p className="text-[10px] opacity-60 uppercase tracking-wider">Цена</p>
-                                            <p className="font-bold text-lg leading-tight">{price} ❤️</p>
-                                        </div>
-                                    </div>
+                    {tab === 'models' ? (
+                        <div className="space-y-6">
+                            <div className="grid grid-cols-2 gap-3">
+                                <div className="glass p-3 rounded-2xl">
+                                    <p className="text-[10px] opacity-60 uppercase">Баланс</p>
+                                    <p className="font-bold text-lg">{balance} ❤️</p>
                                 </div>
-
-                                {/* Model Select */}
-                                <div className="space-y-3">
-                                    <div className="flex justify-between items-end px-1">
-                                        <h3 className="text-sm font-semibold opacity-80">Нейросеть</h3>
-                                        <p className="text-xs text-brand-400 font-medium">{model.toUpperCase()} AI</p>
-                                    </div>
-                                    <div className="glass p-1 rounded-2xl flex gap-1">
-                                        <button 
-                                            onClick={() => setModel('kling')}
-                                            className={`flex-1 py-3 rounded-xl flex flex-col items-center gap-1 transition-all ${model === 'kling' ? 'glass-active' : 'opacity-40'}`}
-                                        >
-                                            <span className="text-xs font-bold uppercase">Kling</span>
-                                        </button>
-                                        <button 
-                                            onClick={() => setModel('banana')}
-                                            className={`flex-1 py-3 rounded-xl flex flex-col items-center gap-1 transition-all ${model === 'banana' ? 'glass-active' : 'opacity-40'}`}
-                                        >
-                                            <span className="text-xs font-bold uppercase">Banana</span>
-                                        </button>
-                                        <button 
-                                            onClick={() => setModel('luma')}
-                                            className={`flex-1 py-3 rounded-xl flex flex-col items-center gap-1 transition-all ${model === 'luma' ? 'glass-active' : 'opacity-40'}`}
-                                        >
-                                            <span className="text-xs font-bold uppercase">Luma</span>
-                                        </button>
-                                    </div>
+                                <div className="glass p-3 rounded-2xl">
+                                    <p className="text-[10px] opacity-60 uppercase">Цена</p>
+                                    <p className="font-bold text-lg">{price} ❤️</p>
                                 </div>
+                            </div>
 
-                                {/* Ratio Section */}
-                                <div className="space-y-3">
-                                    <h3 className="text-sm font-semibold opacity-80 px-1">Соотношение сторон</h3>
-                                    <div className="grid grid-cols-5 gap-2">
-                                        {ratios.map(r => (
-                                            <button 
-                                                key={r.id}
-                                                onClick={() => setRatio(r.id)}
-                                                className={`glass aspect-square rounded-xl flex flex-col items-center justify-center gap-2 transition-all ${ratio === r.id ? 'border-brand-500 ring-1 ring-brand-500' : 'opacity-60'}`}
-                                            >
-                                                <div 
-                                                    className={`border-2 rounded-sm ${ratio === r.id ? 'border-brand-400' : 'border-white/20'}`}
-                                                    style={{ width: `${r.w}%`, height: `${r.h}%` }}
-                                                ></div>
-                                                <span className="text-[10px] font-bold">{r.label}</span>
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Controls Grid */}
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-semibold opacity-60">Продолжительность</label>
-                                        <select 
-                                            value={duration}
-                                            onChange={(e) => setDuration(e.target.value)}
-                                            className="w-full glass p-3 rounded-2xl text-sm"
-                                        >
-                                            <option value="5">5 секунд</option>
-                                            <option value="10">10 секунд</option>
-                                        </select>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-semibold opacity-60">Качество</label>
-                                        <select 
-                                            value={quality}
-                                            onChange={(e) => setQuality(e.target.value)}
-                                            className="w-full glass p-3 rounded-2xl text-sm"
-                                        >
-                                            <option value="standard">Стандартное</option>
-                                            <option value="hd">HD 1080p</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                {/* Slider Section */}
-                                <div className="glass p-4 rounded-2xl space-y-4">
-                                    <div className="flex justify-between items-center">
-                                        <div className="flex items-center gap-2">
-                                            <i data-lucide="help-circle" className="w-3 h-3 opacity-40"></i>
-                                            <label className="text-xs font-semibold opacity-80">Строгость <span className="text-[10px] opacity-40">(--cfg_scale)</span></label>
-                                        </div>
-                                        <span className="text-xs font-bold text-brand-400">{cfg}</span>
-                                    </div>
-                                    <input 
-                                        type="range" 
-                                        min="0" max="1" step="0.1" 
-                                        value={cfg}
-                                        onChange={(e) => setCfg(e.target.value)}
-                                        className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer slider-thumb"
-                                    />
-                                    <div className="flex justify-between text-[10px] opacity-40 font-bold uppercase">
-                                        <span>Свободно</span>
-                                        <span>Базово</span>
-                                        <span>Строго</span>
-                                    </div>
-                                </div>
-
-                                {/* Exclusions */}
-                                <div className="space-y-2">
-                                    <h3 className="text-sm font-semibold opacity-80 px-1">Исключения (негатив)</h3>
-                                    <textarea 
-                                        placeholder="Введите, чего не должно быть на видео..."
-                                        className="w-full glass p-4 rounded-2xl text-sm min-h-[80px] resize-none"
-                                    ></textarea>
-                                </div>
-
-                                {/* Generation Type */}
-                                <div className="flex glass p-1 rounded-2xl">
-                                    {['text', 'revive', 'move'].map(t => (
-                                        <button 
-                                            key={t}
-                                            onClick={() => setMode(t)}
-                                            className={`flex-1 py-3 rounded-xl text-xs font-bold uppercase transition-all ${mode === t ? 'bg-brand-500 text-slate-900' : 'opacity-40'}`}
-                                        >
-                                            {t === 'text' ? 'Текст' : t === 'revive' ? 'Оживить' : 'Движение'}
+                            <div className="space-y-3">
+                                <h3 className="text-sm font-semibold opacity-80">Нейросеть</h3>
+                                <div className="glass p-1 rounded-2xl flex gap-1">
+                                    {['kling', 'banana', 'luma'].map(m => (
+                                        <button key={m} onClick={() => setModel(m)} className={`flex-1 py-3 rounded-xl uppercase text-xs font-bold transition-all ${model === m ? 'bg-brand-500 text-slate-900' : 'opacity-40'}`}>
+                                            {m}
                                         </button>
                                     ))}
                                 </div>
+                            </div>
 
-                                {/* Prompt */}
-                                <div className="space-y-4">
-                                    <textarea 
-                                        placeholder="Опишите, какое видео хотите (необязательно)"
-                                        className="w-full glass p-4 rounded-2xl text-sm min-h-[120px] resize-none"
-                                    ></textarea>
-                                    
-                                    <button 
-                                        className="w-full bg-gradient-to-r from-brand-600 to-brand-400 py-5 rounded-2xl font-bold text-slate-900 shadow-xl shadow-brand-500/20 active:scale-95 transition-all uppercase tracking-widest text-sm"
-                                        onClick={() => {
-                                            if (window.Telegram && window.Telegram.WebApp) {
-                                                window.Telegram.WebApp.sendData(JSON.stringify({
-                                                    model, ratio, duration, quality, cfg, mode, prompt: 'User prompt here'
-                                                }));
-                                                window.Telegram.WebApp.close();
-                                            }
-                                        }}
-                                    >
-                                        Начать генерацию
-                                    </button>
+                            <div className="space-y-3">
+                                <h3 className="text-sm font-semibold opacity-80">Соотношение сторон</h3>
+                                <div className="grid grid-cols-5 gap-2">
+                                    {ratios.map(r => (
+                                        <button key={r.id} onClick={() => setRatio(r.id)} className={`glass aspect-square rounded-xl flex flex-col items-center justify-center gap-1 ${ratio === r.id ? 'border-brand-500 ring-1 ring-brand-500' : 'opacity-60'}`}>
+                                            <div className="border-2 rounded-sm border-current" style={{ width: `${r.w}%`, height: `${r.h}%` }}></div>
+                                            <span className="text-[10px]">{r.label}</span>
+                                        </button>
+                                    ))}
                                 </div>
-                                <p className="text-center text-[10px] opacity-30 font-medium">@Catamania_bot — AI Studio</p>
-                            </motion.div>
-                        ) : (
-                            <motion.div 
-                                key="profile-tab"
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.95 }}
-                                className="glass rounded-[32px] p-8 text-center space-y-6"
-                            >
-                                <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-brand-500 to-orange-500 p-1">
-                                    <div className="w-full h-full rounded-full glass flex items-center justify-center">
-                                        <i data-lucide="user" className="w-12 h-12 text-white"></i>
-                                    </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <label className="text-xs font-semibold opacity-60">Длительность</label>
+                                    <select value={duration} onChange={(e) => setDuration(e.target.value)} className="w-full glass p-3 rounded-2xl text-sm">
+                                        <option value="5">5 секунд</option>
+                                        <option value="10">10 секунд</option>
+                                    </select>
                                 </div>
-                                <div className="space-y-1">
-                                    <h2 className="text-xl font-bold">Личный кабинет</h2>
-                                    <p className="text-sm opacity-60">Ваш ID: 12345678</p>
+                                <div className="space-y-2">
+                                    <label className="text-xs font-semibold opacity-60">Качество</label>
+                                    <select value={quality} onChange={(e) => setQuality(e.target.value)} className="w-full glass p-3 rounded-2xl text-sm">
+                                        <option value="standard">Стандарт</option>
+                                        <option value="hd">HD </option>
+                                    </select>
                                 </div>
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="glass p-4 rounded-2xl">
-                                        <p className="text-[10px] opacity-40 uppercase font-bold mb-1">Генераций</p>
-                                        <p className="text-xl font-bold tracking-tight">142</p>
-                                    </div>
-                                    <div className="glass p-4 rounded-2xl">
-                                        <p className="text-[10px] opacity-40 uppercase font-bold mb-1">Статус</p>
-                                        <p className="text-lg font-bold text-brand-400">VIP</p>
-                                    </div>
-                                </div>
-                                <button className="w-full glass py-4 rounded-2xl font-bold flex items-center justify-center gap-3 active:scale-95 transition-all">
-                                    <i data-lucide="credit-card" className="w-5 h-5"></i> Пополнить баланс
+                            </div>
+
+                            <div className="space-y-4">
+                                <textarea 
+                                    value={prompt}
+                                    onChange={(e) => setPrompt(e.target.value)}
+                                    placeholder="Опишите, что вы хотите создать..."
+                                    className="w-full glass p-4 rounded-2xl text-sm min-h-[120px] resize-none"
+                                ></textarea>
+                                
+                                <button 
+                                    className="w-full bg-brand-500 py-5 rounded-2xl font-bold text-slate-900 shadow-xl active:scale-95 transition-all uppercase tracking-widest text-sm"
+                                    onClick={handleGenerate}
+                                >
+                                    Начать генерацию
                                 </button>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="glass rounded-[32px] p-8 text-center space-y-6">
+                            <div className="w-20 h-20 mx-auto rounded-full bg-brand-500 flex items-center justify-center">
+                                <span className="text-3xl">👤</span>
+                            </div>
+                            <h2 className="text-xl font-bold">Личный кабинет</h2>
+                            <p className="text-sm opacity-60">Ваш аккаунт активен</p>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="glass p-4 rounded-2xl">
+                                    <p className="text-[10px] opacity-40 uppercase">Статус</p>
+                                    <p className="text-lg font-bold">USER</p>
+                                </div>
+                                <div className="glass p-4 rounded-2xl">
+                                    <p className="text-[10px] opacity-40 uppercase">Скидка</p>
+                                    <p className="text-lg font-bold">0%</p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
             );
         };
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
-
-        // Initialize Lucide icons after React render
-        setTimeout(() => lucide.createIcons(), 100);
     </script>
 </body>
 </html>
