@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Котомания AI Studio v6.0</title>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <style>
+        :root { 
+            --primary: #4FA9FF; 
+            --primary-dark: #2563EB;
+            --primary-light: #E0F2FF;
+            --bg: #F8FAFC; 
+            --card: #FFFFFF;
+            --text: #0F172A;
+            --text-light: #64748B;
+            --accent: #818CF8;
+            --glass: rgba(255, 255, 255, 0.8);
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+        body { 
+            background: var(--bg); 
+            color: var(--text); 
+            margin: 0; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            overflow-x: hidden;
+        }
+        .container { max-width: 480px; margin: 0 auto; padding: 20px; min-height: 100vh; display: flex; flex-direction: column; }
+        
+        .header { text-align: left; margin-bottom: 28px; padding-left: 4px; }
+        .header h1 { margin: 0; font-size: 28px; font-weight: 850; color: var(--text); letter-spacing: -0.8px; line-height: 1; }
+        .header p { margin: 8px 0 0; font-size: 14px; color: var(--text-light); font-weight: 500; }
+
+        .nav-back { display: flex; align-items: center; gap: 8px; color: var(--primary); font-weight: 700; cursor: pointer; margin-bottom: 24px; font-size: 15px; }
+
+        .grid-main { display: grid; grid-template-columns: 1fr; gap: 14px; }
+        .hero-btn { 
+            background: var(--card); border: 1.5px solid #F1F5F9; border-radius: 28px; padding: 24px; 
+            display: flex; flex-direction: column; gap: 16px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); cursor: pointer; position: relative; overflow: hidden;
+        }
+        .hero-btn:active { transform: translateY(2px) scale(0.98); background: #F1F5F9; }
+        .hero-btn.blue { background: linear-gradient(135deg, #4FA9FF 0%, #2563EB 100%); color: #fff; border: none; }
+        .hero-btn.purple { background: linear-gradient(135deg, #818CF8 0%, #6366F1 100%); color: #fff; border: none; }
+        .hero-btn.dark { background: #1E293B; color: #fff; border: none; }
+        
+        .hero-icon { font-size: 36px; }
+        .hero-text h3 { margin: 0; font-size: 20px; font-weight: 800; }
+        .hero-text p { margin: 4px 0 0; font-size: 13px; opacity: 0.85; font-weight: 500; }
+
+        .section-label { font-size: 13px; font-weight: 800; color: var(--text-light); text-transform: uppercase; margin: 32px 0 16px 4px; display: block; letter-spacing: 0.5px; }
+
+        .model-card { 
+            background: var(--card); border: 1.5px solid #F1F5F9; border-radius: 22px; padding: 18px; 
+            display: flex; align-items: center; gap: 14px; margin-bottom: 12px; transition: all 0.2s;
+            cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .model-card:active { transform: scale(0.97); background: #F8FAFC; }
+        .model-card.active { border-color: var(--primary); background: var(--primary-light); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1); }
+        .model-avatar { width: 48px; height: 48px; border-radius: 14px; background: #F1F5F9; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        .model-info { flex: 1; }
+        .model-info h4 { margin: 0; font-size: 16px; font-weight: 700; color: var(--text); }
+        .model-info p { margin: 2px 0 0; font-size: 12px; color: var(--text-light); line-height: 1.3; }
+        .badge { font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 6px; text-transform: uppercase; margin-left: 8px; vertical-align: middle; }
+        .badge.pro { background: #FEF3C7; color: #92400E; }
+        .badge.new { background: #DCFCE7; color: #166534; }
+
+        .settings-card { background: #fff; border-radius: 24px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.03); border: 1.5px solid #F1F5F9; margin-bottom: 20px; }
+        
+        .form-group { margin-bottom: 20px; }
+        .form-label { font-size: 12px; font-weight: 800; color: var(--text-light); display: block; margin-bottom: 10px; }
+
+        .ratio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .ratio-btn { border: 1.8px solid #F1F5F9; border-radius: 14px; padding: 12px; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; background: #fff; transition: 0.2s; }
+        .ratio-btn.active { border-color: var(--primary); background: var(--primary-light); color: var(--primary-dark); }
+        .ratio-btn span { font-size: 12px; font-weight: 700; }
+
+        .textarea { width: 100%; border: 1.8px solid #F1F5F9; border-radius: 18px; padding: 16px; font-size: 15px; font-family: inherit; resize: none; min-height: 120px; transition: 0.3s; background: #F8FAFC; }
+        .textarea:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 4px var(--primary-light); }
+
+        .btn-submit { 
+            width: 100%; padding: 20px; border: none; border-radius: 24px; 
+            color: #fff; font-size: 18px; font-weight: 850; box-shadow: 0 12px 24px rgba(37, 99, 235, 0.3); 
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px;
+            transition: all 0.2s; background: var(--primary-dark); margin-top: auto;
+        }
+        .btn-submit:active { transform: scale(0.96); opacity: 0.9; }
+
+        .tab-select { display: flex; background: #F1F5F9; padding: 4px; border-radius: 14px; gap: 4px; margin-bottom: 20px; }
+        .tab-item { flex: 1; padding: 10px; border-radius: 10px; border: none; background: transparent; color: var(--text-light); font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .tab-item.active { background: #fff; color: var(--primary-dark); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+
+        .view-anim { animation: fadeIn 0.4s ease-out forwards; flex: 1; display: flex; flex-direction: column; }
+        @keyframes fadeIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const PHOTO_MODELS = [
+            { id: 'banana_2_pro', name: 'Midjourney v6.1', desc: 'Золотой стандарт фото-искусства (Kie.ai)', icon: '🎨', badge: 'TOP' },
+            { id: 'grok_imagine', name: 'Grok Imagine', desc: 'MJ AI-аналог, быстро и качественно (Kie.ai)', icon: '🧠', badge: 'HOT' },
+            { id: 'banana_2', name: 'Nano Banana 2', desc: 'Ультра-быстрый FLUX 1.1 PRO', icon: '🚀', badge: 'NEW' },
+            { id: 'banana_pro_4k', name: 'Banana Pro 4K', desc: 'Высокое разрешение и детали (ApiYi)', icon: '✨', badge: '4K' },
+            { id: 'photo_pro', name: 'Photo PRO', desc: 'ByteDance Seedream 5.0 Luxe', icon: '💎', badge: 'PRO' },
+            { id: 'photo_std', name: 'Photo Standard', desc: 'ByteDance Seedream 4.5', icon: '🖼', badge: '' },
+            { id: 'banana_nano_pro', name: 'Nano Banana PRO', desc: 'FLUX Dev (PiAPI)', icon: '🍌', badge: 'PRO' },
+            { id: 'banana_nano_std', name: 'Nano Banana Std', desc: 'FLUX Schnell (PiAPI)', icon: '🍌', badge: '' },
+            { id: 'flux_schnell_together', name: 'FLUX Schnell', desc: 'Быстрый доступ (Together AI)', icon: '⚡', badge: '' },
+            { id: 'faceswap_photo', name: 'Face Swap Photo', desc: 'Замена лица на фото (Novita)', icon: '👤', badge: '' },
+            { id: 'chatgpt_photo', name: 'ChatGPT Photo', desc: 'Генерация от GPT (Laozhang)', icon: '💬', badge: '' }
+        ];
+
+        const VIDEO_MODELS = [
+            { id: 'kling_3_0', name: 'Kling 3.0 Omni', desc: 'Вершина видео-генерации (Kie.ai)', icon: '🔥', badge: 'HOT' },
+            { id: 'kling_2_6', name: 'Kling 2.6', desc: 'Стабильность и физика (PiAPI)', icon: '⚡', badge: '' },
+            { id: 'sora_2_pro', name: 'Sora 2 PRO', desc: 'Профессиональное OpenAI Видео (Kie.ai)', icon: '🎬', badge: 'PRO' },
+            { id: 'sora_2', name: 'Sora 2', desc: 'Инновации от APIYI', icon: '🌈', badge: 'NEW' },
+            { id: 'veo_3_1', name: 'Veo 3.1 Fast', desc: 'Google AI Video (PiAPI)', icon: '💨', badge: '' },
+            { id: 'runway_gen4', name: 'Runway Gen4', desc: 'Элитный монтаж (Kie.ai)', icon: '✨', badge: '' },
+            { id: 'motion_control', name: 'Motion Control', desc: 'Управление движением (PiAPI)', icon: '🕹', badge: '' },
+            { id: 'seedance_2_0', name: 'Seedance 2.0', desc: 'Новое поколение ByteDance', icon: '🌊', badge: 'BETA' },
+            { id: 'seedance_1_5', name: 'Seedance 1.5 PRO', desc: 'Улучшенная версия (BytePlus)', icon: '🎥', badge: '' },
+            { id: 'seedance_1_0', name: 'Seedance 1.0 Fast', desc: 'Быстрое видео (BytePlus)', icon: '🎞', badge: '' },
+            { id: 'faceswap_video', name: 'Face Swap Video', desc: 'Замена лица на видео (Novita)', icon: '👤', badge: '' }
+        ];
+
+        const MainMenu = ({ setView }) => (
+            <div className="view-anim">
+                <div className="header">
+                    <h1>AI СТУДИЯ <span style={{color:'var(--primary)'}}>v6.0</span></h1>
+                    <p>Твой ультимативный ИИ-комбайн 🦄</p>
+                </div>
+                <div className="grid-main">
+                    <div className="hero-btn blue" onClick={() => setView('photo')}>
+                        <span className="hero-icon">🎨</span>
+                        <div className="hero-text">
+                            <h3>ФОТО СТУДИЯ</h3>
+                            <p>Создавай шедевры: MJ, FLUX, Seedream</p>
+                        </div>
+                    </div>
+                    <div className="hero-btn purple" onClick={() => setView('video')}>
+                        <span className="hero-icon">🎬</span>
+                        <div className="hero-text">
+                            <h3>ВИДЕО СТУДИЯ</h3>
+                            <p>Генерация: Kling, Sora, Seedance</p>
+                        </div>
+                    </div>
+                    <div className="hero-btn dark" onClick={() => setView('cartoon')} style={{border: '2px dashed var(--accent)'}}>
+                        <span className="hero-icon">🏰</span>
+                        <div className="hero-text">
+                            <h3>МУЛЬТ-СТУДИЯ [СПЕЦ]</h3>
+                            <p>Эксклюзивный раздел для создания мультиков ✨</p>
+                        </div>
+                    </div>
+                    <div className="hero-btn dark" onClick={() => setView('chat')}>
+                        <span className="hero-icon">💬</span>
+                        <div className="hero-text">
+                            <h3>CHAT GPT AI</h3>
+                            <p>Умный помощник и копирайтер</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <span className="section-label">Твои Инструменты</span>
+                <div className="model-card" onClick={() => setView('banana')}>
+                    <div className="model-avatar">🍌</div>
+                    <div className="model-info">
+                        <h4>Линейка Banana</h4>
+                        <p>Быстрые и доступные модели генерации</p>
+                    </div>
+                </div>
+
+                <div className="model-card" onClick={() => setView('faceswap')} style={{background: 'linear-gradient(135deg, #EEF2FF 0%, #F5F3FF 100%)', border: '1px solid #C4B5FD'}}>
+                    <div className="model-avatar">🎭</div>
+                    <div className="model-info">
+                        <h4>ВЕСЕЛЬЕ [Студия]</h4>
+                        <p>Замена лиц, аватары и спецэффекты</p>
+                    </div>
+                </div>
+            </div>
+        );
+
+        const SelectionScreen = ({ type, setView, model, setModel, ratio, setRatio, quality, setQuality, duration, setDuration, prompt, setPrompt, onGo }) => {
+            const models = type === 'photo' ? PHOTO_MODELS : VIDEO_MODELS;
+            
+            return (
+                <div className="view-anim">
+                    <div className="nav-back" onClick={() => setView('main')}>← Назад в меню</div>
+                    
+                    <span className="section-label">Выберите нейросеть</span>
+                    <div style={{maxHeight:'320px', overflowY:'auto', paddingRight:'4px', marginBottom:'20px'}}>
+                        {models.map(m => (
+                            <div key={m.id} className={`model-card ${model === m.id ? 'active' : ''}`} onClick={() => setModel(m.id)}>
+                                <div className="model-avatar">{m.icon}</div>
+                                <div className="model-info">
+                                    <h4>{m.name} {m.badge && <span className={`badge ${m.badge.toLowerCase()}`}>{m.badge}</span>}</h4>
+                                    <p>{m.desc}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="settings-card">
+                        {type === 'video' && (
+                            <div className="form-group">
+                                <span className="form-label">Параметры видео</span>
+                                <div className="tab-select">
+                                    <button className={`tab-item ${quality === '720p' ? 'active' : ''}`} onClick={() => setQuality('720p')}>720p</button>
+                                    <button className={`tab-item ${quality === '1080p' ? 'active' : ''}`} onClick={() => setQuality('1080p')}>1080p</button>
+                                    <div style={{width:'1px', background:'#E2E8F0'}}></div>
+                                    <button className={`tab-item ${duration === '5' ? 'active' : ''}`} onClick={() => setDuration('5')}>5 сек</button>
+                                    <button className={`tab-item ${duration === '10' ? 'active' : ''}`} onClick={() => setDuration('10')}>10 сек</button>
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="form-group" style={{marginBottom:0}}>
+                            <span className="form-label">Формат изображения</span>
+                            <div className="ratio-grid">
+                                {['1:1', '9:16', '16:9', '4:3', '3:4'].map(r => (
+                                    <div key={r} className={`ratio-btn ${ratio === r ? 'active' : ''}`} onClick={() => setRatio(r)}>
+                                        <span>{r}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="form-group">
+                        <textarea className="textarea" placeholder="Опишите, что нужно создать..." value={prompt} onChange={(e) => setPrompt(e.target.value)} />
+                    </div>
+
+                    <button className="btn-submit" onClick={() => onGo({type, model, ratio, quality, duration, prompt})}>
+                        <span>Запустить генерацию 🚀</span>
+                    </button>
+                </div>
+            );
+        };
+
+        const CartoonView = ({ setView, model, setModel, ratio, setRatio, prompt, setPrompt, onGo }) => {
+            const CARTOON_MODELS = [
+                { id: 'cartoon_pixar', name: 'Pixar Style', desc: '3D анимация Disney/Pixar', icon: '🏰', style: 'pixar' },
+                { id: 'cartoon_anime', name: 'Anime Style', desc: 'Японская анимация (Niji)', icon: '⛩', style: 'anime' },
+                { id: 'cartoon_clay', name: 'Claymation', desc: 'Пластилиновый мультфильм', icon: '🧸', style: 'clay' },
+                { id: 'cartoon_3d', name: 'Modern 3D', desc: 'Стиль современных игр', icon: '🎮', style: 'game' }
+            ];
+
+            return (
+                <div className="view-anim">
+                    <div className="nav-back" onClick={() => setView('main')}>← Назад</div>
+                    <div className="header">
+                        <h1>МУЛЬТ <span style={{color:'var(--primary)'}}>СТУДИЯ</span></h1>
+                        <p>Создавай свои мультфильмы ✨</p>
+                    </div>
+
+                    <span className="section-label">Выберите стиль</span>
+                    <div className="grid-main" style={{gridTemplateColumns:'1fr 1fr', gap:10}}>
+                        {CARTOON_MODELS.map(m => (
+                            <div key={m.id} className={`hero-btn ${model === m.id ? 'dark' : ''}`} 
+                                 style={{padding:16, border: model === m.id ? '2px solid var(--primary)' : '1.5px solid #F1F5F9'}}
+                                 onClick={() => setModel(m.id)}>
+                                <span style={{fontSize:24}}>{m.icon}</span>
+                                <div className="hero-text">
+                                    <h4 style={{fontSize:14, margin:0}}>{m.name}</h4>
+                                    <p style={{fontSize:10, margin:0, opacity:0.7}}>{m.desc}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="settings-card" style={{marginTop:20}}>
+                        <span className="form-label">Тип результата</span>
+                        <div className="tab-select">
+                            <button className="tab-item active">ФОТО + ВИДЕО</button>
+                        </div>
+                        <span className="form-label">Формат</span>
+                        <div className="ratio-grid">
+                            {['1:1', '9:16', '16:9'].map(r => (
+                                <div key={r} className={`ratio-btn ${ratio === r ? 'active' : ''}`} onClick={() => setRatio(r)}>
+                                    <span>{r}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="form-group">
+                        <textarea className="textarea" placeholder="Кого превратим в мультик? Например: веселый кот в очках..." value={prompt} onChange={(e) => setPrompt(e.target.value)} />
+                    </div>
+
+                    <button className="btn-submit" onClick={() => onGo({type: 'cartoon', model, ratio, prompt})}>
+                        <span>Создать Магию ✨</span>
+                    </button>
+                </div>
+            );
+        };
+
+        const ChatView = ({ setView, prompt, setPrompt, onGo }) => (
+            <div className="view-anim">
+                <div className="nav-back" onClick={() => setView('main')}>← Назад</div>
+                <div className="header">
+                    <h1>CHAT <span style={{color:'var(--primary)'}}>GPT</span></h1>
+                    <p>Задай любой вопрос умному ассистенту.</p>
+                </div>
+                <div className="form-group" style={{marginTop:'20px'}}>
+                    <textarea className="textarea" placeholder="Напиши сообщение..." value={prompt} onChange={(e) => setPrompt(e.target.value)} />
+                </div>
+                <button className="btn-submit" onClick={() => onGo({type: 'chat', model: 'chatgpt', prompt})}>
+                    <span>Отправить запрос 💬</span>
+                </button>
+            </div>
+        );
+
+        const FaceSwapView = ({ setView, onGo }) => (
+            <div className="view-anim">
+                <div className="nav-back" onClick={() => setView('main')}>← Назад</div>
+                <div className="header">
+                    <h1>🎭 ВЕСЕЛЬЕ <span style={{color:'var(--primary)'}}>[СТУДИЯ]</span></h1>
+                    <p>Лучшие инструменты для фана и хайпа!</p>
+                </div>
+                
+                <div className="grid-main" style={{marginTop: '20px'}}>
+                    <div className="hero-btn purple" onClick={() => onGo({type: 'faceswap', model: 'novita_face'})} style={{flex: '1 0 100%'}}>
+                        <span className="hero-icon">🎭</span>
+                        <div className="hero-text">
+                            <h3>Замена лиц</h3>
+                            <p>Вставь своё лицо в любое фото</p>
+                        </div>
+                    </div>
+                    <div className="hero-btn dark" onClick={() => onGo({type: 'enhance', model: 'upscale'})}>
+                        <span className="hero-icon">✨</span>
+                        <div className="hero-text">
+                            <h3>Улучшить</h3>
+                            <p>4K Upscale фото</p>
+                        </div>
+                    </div>
+                    <div className="hero-btn dark" onClick={() => onGo({type: 'remove_bg', model: 'no_bg'})}>
+                        <span className="hero-icon">✂️</span>
+                        <div className="hero-text">
+                            <h3>Удалить фон</h3>
+                            <p>Профи вырезание</p>
+                        </div>
+                    </div>
+                    <div className="hero-btn blue" onClick={() => onGo({type: 'avatar', model: 'ai_avatar'})} style={{flex: '1 0 100%'}}>
+                        <span className="hero-icon">👤</span>
+                        <div className="hero-text">
+                            <h3>Создать Аватар</h3>
+                            <p>Твой ИИ-портрет по фото</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+
+        function App() {
+            const [view, setView] = useState('main');
+            const [model, setModel] = useState('photo_pro');
+            const [ratio, setRatio] = useState('9:16');
+            const [quality, setQuality] = useState('720p');
+            const [duration, setDuration] = useState('5');
+            
+            const [promptPhoto, setPromptPhoto] = useState('');
+            const [promptVideo, setPromptVideo] = useState('');
+            const [promptBanana, setPromptBanana] = useState('');
+            const [promptCartoon, setPromptCartoon] = useState('');
+            const [promptChat, setPromptChat] = useState('');
+
+            useEffect(() => {
+                if (window.Telegram && window.Telegram.WebApp) {
+                    window.Telegram.WebApp.ready();
+                    window.Telegram.WebApp.expand();
+                    window.Telegram.WebApp.setHeaderColor('#F8FAFC');
+                }
+            }, []);
+
+            const handleGo = (data) => {
+                const payload = { ...data, v: '6.0' };
+                if (window.Telegram && window.Telegram.WebApp) {
+                    window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+                    window.Telegram.WebApp.sendData(JSON.stringify(payload));
+                    window.Telegram.WebApp.close();
+                } else {
+                    alert('SUBMITTED:\n' + JSON.stringify(payload, null, 2));
+                }
+            };
+
+            return (
+                <div className="container">
+                    {view === 'main' && <MainMenu setView={setView} />}
+                    {view === 'photo' && (
+                        <SelectionScreen 
+                            type="photo" setView={setView} model={model} setModel={setModel} 
+                            ratio={ratio} setRatio={setRatio} prompt={promptPhoto} setPrompt={setPromptPhoto} onGo={handleGo}
+                        />
+                    )}
+                    {view === 'video' && (
+                        <SelectionScreen 
+                            type="video" setView={setView} model={model} setModel={setModel} 
+                            ratio={ratio} setRatio={setRatio} quality={quality} setQuality={setQuality}
+                            duration={duration} setDuration={setDuration} prompt={promptVideo} setPrompt={setPromptVideo} onGo={handleGo}
+                        />
+                    )}
+                    {view === 'banana' && (
+                        <SelectionScreen 
+                            type="photo" setView={setView} model={model} setModel={setModel} 
+                            ratio={ratio} setRatio={setRatio} prompt={promptBanana} setPrompt={setPromptBanana} onGo={handleGo}
+                        />
+                    )}
+                    {view === 'cartoon' && (
+                        <CartoonView setView={setView} model={model} setModel={setModel} ratio={ratio} setRatio={setRatio} prompt={promptCartoon} setPrompt={setPromptCartoon} onGo={handleGo} />
+                    )}
+                    {view === 'chat' && (
+                        <ChatView setView={setView} prompt={promptChat} setPrompt={setPromptChat} onGo={handleGo} />
+                    )}
+                    {view === 'faceswap' && (
+                        <FaceSwapView setView={setView} onGo={handleGo} />
+                    )}
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
