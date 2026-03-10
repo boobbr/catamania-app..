@@ -3,199 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Котомания AI Mini App</title>
+    <title>Котомания AI Studio</title>
+    <!-- Базовые скрипты: React и Babel -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    colors: {
-                        brand: { 50: '#fdf8ed', 100: '#f9f1d5', 200: '#f3e3ad', 300: '#ebcf7b', 400: '#e5bb52', 500: '#db9d2b', 600: '#c37e21', 700: '#a25f1e', 800: '#854b20', 900: '#71401f' }
-                    }
-                }
-            }
-        }
-        window.onerror = function(msg, url, lineNo, columnNo, error) {
-            const root = document.getElementById('root');
-            if (root) {
-                root.style.background = '#7f1d1d'; // Dark red
-                root.innerHTML = `<div style="padding: 24px; color: white;">
-                    <h2 style="margin-top:0">🚨 Ошибка запуска</h2>
-                    <p style="opacity: 0.8">${msg}</p>
-                    <p style="font-size: 11px; opacity: 0.5">Линия: ${lineNo}</p>
-                    <button onclick="location.reload()" style="margin-top:20px; padding:10px 20px; border-radius:10px; border:none; background:white; color:black; font-weight:bold;">Перезагрузить</button>
-                </div>`;
-            }
-            return false;
-        };
-    </script>
+    
     <style>
-        body { background: #0f172a; color: #f8fafc; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
-        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .glass-active { background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); }
-        input, textarea, select { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); outline: none; }
-        .slider-thumb::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; background: #db9d2b; border-radius: 50%; cursor: pointer; }
-        ::-webkit-scrollbar { width: 0; }
+        :root { --brand: #db9d2b; --bg: #0f172a; --glass: rgba(255, 255, 255, 0.05); }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: #fff; margin:0; font-family: -apple-system, system-ui, sans-serif; }
+        .app-container { max-width: 500px; margin: 0 auto; padding: 20px; }
+        .card { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .btn-main { width: 100%; background: var(--brand); color: #000; border: none; padding: 18px; border-radius: 15px; font-weight: bold; font-size: 16px; cursor: pointer; text-transform: uppercase; }
+        .input-text { width:100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 10px; margin-top: 8px; font-size: 14px; }
+        .tabs { display: flex; background: var(--glass); padding: 5px; border-radius: 15px; margin-bottom: 20px; }
+        .tab { flex: 1; padding: 10px; text-align: center; border-radius: 10px; font-size: 14px; cursor: pointer; }
+        .tab.active { background: rgba(255,255,255,0.1); font-weight: bold; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .label { font-size: 12px; opacity: 0.6; display: block; margin-top: 15px; }
+        .status-error { background: #7f1d1d; padding: 20px; border-radius: 10px; margin: 20px; }
     </style>
 </head>
 <body>
-    <div id="root" style="color: white; text-align: center; padding-top: 100px; font-family: sans-serif;">
-        <div style="font-size: 40px; margin-bottom: 20px;">🚀</div>
-        Загрузка AI Студии...
+    <div id="root">
+        <div style="text-align:center; padding-top:100px;">
+            <div style="font-size:40px">🐈</div>
+            <p>Запуск Студии Котомании...</p>
+        </div>
     </div>
 
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        const App = () => {
-            const [tab, setTab] = useState('models');
+        function App() {
             const [model, setModel] = useState('kling');
-            const [ratio, setRatio] = useState('9:16');
-            const [duration, setDuration] = useState('5');
-            const [quality, setQuality] = useState('standard');
-            const [cfg, setCfg] = useState(0.5);
-            const [mode, setMode] = useState('text');
-            const [balance, setBalance] = useState(15);
-            const [price, setPrice] = useState(45);
             const [prompt, setPrompt] = useState('');
+            const [ratio, setRatio] = useState('9:16');
 
             useEffect(() => {
-                if (window.Telegram && window.Telegram.WebApp) {
-                    window.Telegram.WebApp.ready();
-                    window.Telegram.WebApp.expand();
-                }
-                setTimeout(() => lucide.createIcons(), 100);
+                try {
+                    if (window.Telegram && window.Telegram.WebApp) {
+                        window.Telegram.WebApp.ready();
+                        window.Telegram.WebApp.expand();
+                    }
+                } catch(e) { console.error(e); }
             }, []);
 
-            const ratios = [
-                { id: '1:1', label: '1:1', w: 40, h: 40 },
-                { id: '9:16', label: '9:16', w: 26, h: 46 },
-                { id: '16:9', label: '16:9', w: 46, h: 26 },
-                { id: '4:3', label: '4:3', w: 40, h: 30 },
-                { id: '3:4', label: '3:4', w: 30, h: 40 },
-            ];
-
-            const handleGenerate = () => {
+            const generate = () => {
+                const data = { model, prompt, ratio, v: '2.1' };
                 if (window.Telegram && window.Telegram.WebApp) {
-                    window.Telegram.WebApp.sendData(JSON.stringify({ model, ratio, duration, quality, cfg, mode, prompt }));
+                    window.Telegram.WebApp.sendData(JSON.stringify(data));
                     window.Telegram.WebApp.close();
                 } else {
-                    alert('Запущено вне Telegram. Данные: ' + JSON.stringify({model, prompt}));
+                    alert('Данные готовы: ' + JSON.stringify(data));
                 }
             };
 
             return (
-                <div className="min-h-screen p-4 pb-24 font-sans max-w-md mx-auto">
-                    <div className="flex p-1 mb-6 glass rounded-2xl">
-                        <button onClick={() => setTab('models')} className={`flex-1 py-2 rounded-xl text-sm font-medium transition-all ${tab === 'models' ? 'bg-white/10 shadow-lg' : 'opacity-60'}`}>
-                            Модели
-                        </button>
-                        <button onClick={() => setTab('profile')} className={`flex-1 py-2 rounded-xl text-sm font-medium transition-all ${tab === 'profile' ? 'bg-white/10 shadow-lg' : 'opacity-60'}`}>
-                            Профиль
-                        </button>
+                <div className="app-container">
+                    <div style={{textAlign:'center', marginBottom:20}}>
+                        <h2 style={{margin:0, color:'var(--brand)'}}>Котомания AI Studio</h2>
+                        <p style={{fontSize:10, opacity:0.3}}>v2.1 Stable</p>
                     </div>
 
-                    {tab === 'models' ? (
-                        <div className="space-y-6">
-                            <div className="grid grid-cols-2 gap-3">
-                                <div className="glass p-3 rounded-2xl">
-                                    <p className="text-[10px] opacity-60 uppercase">Баланс</p>
-                                    <p className="font-bold text-lg">{balance} ❤️</p>
-                                </div>
-                                <div className="glass p-3 rounded-2xl">
-                                    <p className="text-[10px] opacity-60 uppercase">Цена</p>
-                                    <p className="font-bold text-lg">{price} ❤️</p>
-                                </div>
-                            </div>
+                    <div className="card">
+                        <label className="label" style={{marginTop:0}}>ВЫБЕРЕТЕ МОДЕЛЬ</label>
+                        <select className="input-text" value={model} onChange={e => setModel(e.target.value)}>
+                            <option value="kling">Kling 2.5 Turbo</option>
+                            <option value="banana">Banana PRO</option>
+                            <option value="luma">Luma Dream</option>
+                        </select>
 
-                            <div className="space-y-3">
-                                <h3 className="text-sm font-semibold opacity-80">Нейросеть</h3>
-                                <div className="glass p-1 rounded-2xl flex gap-1">
-                                    {['kling', 'banana', 'luma'].map(m => (
-                                        <button key={m} onClick={() => setModel(m)} className={`flex-1 py-3 rounded-xl uppercase text-xs font-bold transition-all ${model === m ? 'bg-brand-500 text-slate-900' : 'opacity-40'}`}>
-                                            {m}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div className="space-y-3">
-                                <h3 className="text-sm font-semibold opacity-80">Соотношение сторон</h3>
-                                <div className="grid grid-cols-5 gap-2">
-                                    {ratios.map(r => (
-                                        <button key={r.id} onClick={() => setRatio(r.id)} className={`glass aspect-square rounded-xl flex flex-col items-center justify-center gap-1 ${ratio === r.id ? 'border-brand-500 ring-1 ring-brand-500' : 'opacity-60'}`}>
-                                            <div className="border-2 rounded-sm border-current" style={{ width: `${r.w}%`, height: `${r.h}%` }}></div>
-                                            <span className="text-[10px]">{r.label}</span>
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="space-y-2">
-                                    <label className="text-xs font-semibold opacity-60">Длительность</label>
-                                    <select value={duration} onChange={(e) => setDuration(e.target.value)} className="w-full glass p-3 rounded-2xl text-sm">
-                                        <option value="5">5 секунд</option>
-                                        <option value="10">10 секунд</option>
-                                    </select>
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-xs font-semibold opacity-60">Качество</label>
-                                    <select value={quality} onChange={(e) => setQuality(e.target.value)} className="w-full glass p-3 rounded-2xl text-sm">
-                                        <option value="standard">Стандарт</option>
-                                        <option value="hd">HD </option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div className="space-y-4">
-                                <textarea 
-                                    value={prompt}
-                                    onChange={(e) => setPrompt(e.target.value)}
-                                    placeholder="Опишите, что вы хотите создать..."
-                                    className="w-full glass p-4 rounded-2xl text-sm min-h-[120px] resize-none"
-                                ></textarea>
-                                
-                                <button 
-                                    className="w-full bg-brand-500 py-5 rounded-2xl font-bold text-slate-900 shadow-xl active:scale-95 transition-all uppercase tracking-widest text-sm"
-                                    onClick={handleGenerate}
-                                >
-                                    Начать генерацию
-                                </button>
-                            </div>
+                        <label className="label">ФОРМАТ</label>
+                        <div className="grid-2" style={{marginTop:8}}>
+                            <button onClick={()=>setRatio('9:16')} style={{background: ratio==='9:16'?'rgba(255,255,255,0.2)':'transparent'}} className="tab">📱 9:16</button>
+                            <button onClick={()=>setRatio('1:1')} style={{background: ratio==='1:1'?'rgba(255,255,255,0.2)':'transparent'}} className="tab">🟦 1:1</button>
                         </div>
-                    ) : (
-                        <div className="glass rounded-[32px] p-8 text-center space-y-6">
-                            <div className="w-20 h-20 mx-auto rounded-full bg-brand-500 flex items-center justify-center">
-                                <span className="text-3xl">👤</span>
-                            </div>
-                            <h2 className="text-xl font-bold">Личный кабинет</h2>
-                            <p className="text-sm opacity-60">Ваш аккаунт активен</p>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="glass p-4 rounded-2xl">
-                                    <p className="text-[10px] opacity-40 uppercase">Статус</p>
-                                    <p className="text-lg font-bold">USER</p>
-                                </div>
-                                <div className="glass p-4 rounded-2xl">
-                                    <p className="text-[10px] opacity-40 uppercase">Скидка</p>
-                                    <p className="text-lg font-bold">0%</p>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                    </div>
+
+                    <div className="card">
+                        <label className="label" style={{marginTop:0}}>ЧТО СОЗДАТЬ?</label>
+                        <textarea 
+                            className="input-text" 
+                            rows="4" 
+                            placeholder="Напишите запрос..."
+                            value={prompt}
+                            onChange={e => setPrompt(e.target.value)}
+                        />
+                    </div>
+
+                    <button className="btn-main" onClick={generate}>
+                        Создать Видео 🚀
+                    </button>
+
+                    <p style={{textAlign:'center', fontSize:10, opacity:0.2, marginTop:20}}>
+                        ID: {window.Telegram?.WebApp?.initDataUnsafe?.user?.id || 'demo'}
+                    </p>
                 </div>
             );
-        };
+        }
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        try {
+            ReactDOM.render(<App />, document.getElementById('root'));
+        } catch(e) {
+            document.getElementById('root').innerHTML = `<div class="status-error">Ошибка: ${e.message}</div>`;
+        }
     </script>
 </body>
 </html>
