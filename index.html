@@ -129,6 +129,8 @@
             const [funSubMode, setFunSubMode] = useState('photo'); // photo, video
             const [model, setModel] = useState('photo_pro');
             const [ratio, setRatio] = useState('9:16');
+            const [quality, setQuality] = useState('720p');
+            const [duration, setDuration] = useState('5');
             const [prompt, setPrompt] = useState('');
 
             useEffect(() => {
@@ -218,6 +220,28 @@
                         </div>
                     </div>
 
+                    {funSubMode === 'video' && (
+                        <div className="card">
+                            <span className="label">Настройки видео</span>
+                            <div className="grid-2" style={{gap:10, display:'grid', gridTemplateColumns:'1fr 1fr'}}>
+                                <div>
+                                    <span style={{fontSize:10, opacity:0.5, marginBottom:4, display:'block'}}>КАЧЕСТВО</span>
+                                    <div className="tabs" style={{marginBottom:0}}>
+                                        <button className={`tab-btn ${quality === '480p' ? 'active' : ''}`} onClick={() => setQuality('480p')}>480p</button>
+                                        <button className={`tab-btn ${quality === '720p' ? 'active' : ''}`} onClick={() => setQuality('720p')}>720p</button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span style={{fontSize:10, opacity:0.5, marginBottom:4, display:'block'}}>ДЛИТЕЛЬНОСТЬ</span>
+                                    <div className="tabs" style={{marginBottom:0}}>
+                                        <button className={`tab-btn ${duration === '5' ? 'active' : ''}`} onClick={() => setDuration('5')}>5 сек</button>
+                                        <button className={`tab-btn ${duration === '10' ? 'active' : ''}`} onClick={() => setDuration('10')}>10 сек</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     <div className="card">
                         <span className="label">Формат</span>
                         <div className="ratio-grid">
@@ -245,7 +269,7 @@
                         />
                     </div>
 
-                    <button className="btn-go" onClick={() => sendData({type: funSubMode, model, ratio, prompt, v: '4.0'})}>
+                    <button className="btn-go" onClick={() => sendData({type: funSubMode, model, ratio, quality, duration, prompt, v: '4.1'})}>
                         <span>Запустить магию! 🚀</span>
                     </button>
                 </div>
