@@ -347,11 +347,11 @@
 
         const FunSelectionView = ({ type, setSubView, onGo }) => {
             const models = type === 'photo' ? [
-                { id: 'photo_pro', name: 'Seedream 5.0 Luxe', desc: 'Максимальное качество и детали', icon: '💎', badge: 'PRO' },
-                { id: 'photo_std', name: 'Seedream 4.5 Std', desc: 'Классическое качество ByteDance', icon: '🖼', badge: '' }
+                { id: 'photo_pro', name: 'Фото ПРО', desc: 'Максимальное качество и детали (Seedream 5.0)', icon: '💎', badge: 'PRO' },
+                { id: 'photo_std', name: 'Фото Стандарт', desc: 'Классическое качество (Seedream 4.5)', icon: '🖼', badge: '' }
             ] : [
-                { id: 'seedance_1_5', name: 'Seedance 1.5 PRO', desc: 'Улучшенная физика и детали', icon: '🎥', badge: 'ELITE' },
-                { id: 'seedance_1_0', name: 'Seedance 1.0 Fast', desc: 'Быстрая видео-генерация', icon: '🎞', badge: '' }
+                { id: 'seedance_1_5', name: 'Видео ПРО', desc: 'Улучшенная физика и детали (Seedance 1.5)', icon: '🎥', badge: 'ELITE' },
+                { id: 'seedance_1_0', name: 'Видео Стандарт', desc: 'Быстрая видео-генерация (Seedance 1.0)', icon: '🎞', badge: '' }
             ];
 
             const [model, setModel] = useState(models[0].id);
