@@ -135,7 +135,7 @@
         const MainMenu = ({ setView }) => (
             <div className="view-anim">
                 <div className="header">
-                    <h1>КОТОМАНИЯ <span style={{color:'var(--primary)'}}>v6.0</span></h1>
+                    <h1>КОТОМАНИЯ <span style={{color:'var(--primary)'}}>v7.0</span></h1>
                     <p>Твой ультимативный ИИ-комбайн 🦄</p>
                 </div>
                 <div className="grid-main">
@@ -419,7 +419,7 @@
             }, []);
 
             const handleGo = (data) => {
-                const payload = { ...data, v: '6.0' };
+                const payload = { ...data, v: '7.0' };
                 if (window.Telegram && window.Telegram.WebApp) {
                     window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
                     window.Telegram.WebApp.sendData(JSON.stringify(payload));
