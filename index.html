@@ -109,6 +109,8 @@
             { id: 'grok_imagine', name: 'Grok Imagine', desc: 'MJ AI-аналог, быстро и качественно (Kie.ai)', icon: '🧠', badge: 'HOT' },
             { id: 'banana_2', name: 'Nano Banana 2', desc: 'Ультра-быстрый FLUX 1.1 PRO', icon: '🚀', badge: 'NEW' },
             { id: 'banana_pro_4k', name: 'Banana Pro 4K', desc: 'Высокое разрешение и детали (ApiYi)', icon: '✨', badge: '4K' },
+            { id: 'photo_pro', name: 'Photo PRO', desc: 'ByteDance Seedream 5.0 Luxe', icon: '💎', badge: 'PRO' },
+            { id: 'photo_std', name: 'Photo Standard', desc: 'ByteDance Seedream 4.5', icon: '🖼', badge: '' },
             { id: 'banana_nano_pro', name: 'Nano Banana PRO', desc: 'FLUX Dev (PiAPI)', icon: '🍌', badge: 'PRO' },
             { id: 'banana_nano_std', name: 'Nano Banana Std', desc: 'FLUX Schnell (PiAPI)', icon: '🍌', badge: '' },
             { id: 'flux_schnell_together', name: 'FLUX Schnell', desc: 'Быстрый доступ (Together AI)', icon: '⚡', badge: '' },
@@ -125,6 +127,8 @@
             { id: 'runway_gen4', name: 'Runway Gen4', desc: 'Элитный монтаж (Kie.ai)', icon: '✨', badge: '' },
             { id: 'motion_control', name: 'Motion Control', desc: 'Управление движением (PiAPI)', icon: '🕹', badge: '' },
             { id: 'seedance_2_0', name: 'Seedance 2.0', desc: 'Новое поколение ByteDance', icon: '🌊', badge: 'BETA' },
+            { id: 'seedance_1_5', name: 'Seedance 1.5 PRO', desc: 'Улучшенная версия (BytePlus)', icon: '🎥', badge: '' },
+            { id: 'seedance_1_0', name: 'Seedance 1.0 Fast', desc: 'Быстрое видео (BytePlus)', icon: '🎞', badge: '' },
             { id: 'faceswap_video', name: 'Face Swap Video', desc: 'Замена лица на видео (Novita)', icon: '👤', badge: '' }
         ];
 
@@ -314,64 +318,87 @@
             </div>
         );
 
-        const FaceSwapView = ({ setView, onGo }) => (
+        const FaceSwapView = ({ setView, setSubView }) => (
             <div className="view-anim">
-                <div className="nav-back" onClick={() => setView('main')}>← Назад</div>
+                <div className="nav-back" onClick={() => setView('main')}>← Назад в меню</div>
                 <div className="header">
                     <h1>🎭 ВЕСЕЛЬЕ <span style={{color:'var(--primary)'}}>[СТУДИЯ]</span></h1>
-                    <p>Лучшие инструменты для фана и хайпа!</p>
+                    <p>Эксклюзивные инструменты Seedream & Seedance ✨</p>
                 </div>
                 
-                <div className="grid-main" style={{marginTop: '20px', gridTemplateColumns: '1fr 1fr'}}>
-                    <div className="hero-btn purple" onClick={() => onGo({type: 'faceswap', model: 'novita_face'})} style={{gridColumn: 'span 2'}}>
-                        <span className="hero-icon">🎭</span>
+                <div className="grid-main" style={{marginTop: '20px'}}>
+                    <div className="hero-btn purple" onClick={() => setSubView('fun_photo')}>
+                        <span className="hero-icon">📸</span>
                         <div className="hero-text">
-                            <h3>Замена лиц</h3>
-                            <p>Вставь своё лицо в любое фото</p>
+                            <h3>ФОТО [PRO СТУДИЯ]</h3>
+                            <p>Seedream 5.0 Luxe & Standard</p>
                         </div>
                     </div>
-                    <div className="hero-btn dark" onClick={() => onGo({type: 'enhance', model: 'upscale'})}>
-                        <span className="hero-icon">✨</span>
-                        <div className="hero-text">
-                            <h3>Улучшить</h3>
-                            <p>4K Upscale</p>
-                        </div>
-                    </div>
-                    <div className="hero-btn dark" onClick={() => onGo({type: 'remove_bg', model: 'no_bg'})}>
-                        <span className="hero-icon">✂️</span>
-                        <div className="hero-text">
-                            <h3>Удалить фон</h3>
-                            <p>PNG вырезание</p>
-                        </div>
-                    </div>
-                    <div className="hero-btn blue" onClick={() => onGo({type: 'avatar', model: 'ai_avatar'})} style={{gridColumn: 'span 2'}}>
-                        <span className="hero-icon">👤</span>
-                        <div className="hero-text">
-                            <h3>Создать Аватар</h3>
-                            <p>Твой ИИ-портрет</p>
-                        </div>
-                    </div>
-                    {/* Перемещенные модели */}
-                    <div className="hero-btn dark" onClick={() => onGo({type: 'photo', model: 'photo_pro'})} style={{border: '1.5px solid #E2E8F0'}}>
-                        <span className="hero-icon">💎</span>
-                        <div className="hero-text">
-                            <h3>Photo Luxe</h3>
-                            <p>Seedream 5.0</p>
-                        </div>
-                    </div>
-                    <div className="hero-btn dark" onClick={() => onGo({type: 'video', model: 'seedance_1_5'})} style={{border: '1.5px solid #E2E8F0'}}>
+                    <div className="hero-btn blue" onClick={() => setSubView('fun_video')}>
                         <span className="hero-icon">🎥</span>
                         <div className="hero-text">
-                            <h3>Video Elite</h3>
-                            <p>Seedance PRO</p>
+                            <h3>ВИДЕО [PRO СТУДИЯ]</h3>
+                            <p>Seedance 1.5 PRO & 1.0 Fast</p>
                         </div>
                     </div>
                 </div>
             </div>
         );
 
+        const FunSelectionView = ({ type, setSubView, onGo }) => {
+            const models = type === 'photo' ? [
+                { id: 'photo_pro', name: 'Seedream 5.0 Luxe', desc: 'Максимальное качество и детали', icon: '💎', badge: 'PRO' },
+                { id: 'photo_std', name: 'Seedream 4.5 Std', desc: 'Классическое качество ByteDance', icon: '🖼', badge: '' }
+            ] : [
+                { id: 'seedance_1_5', name: 'Seedance 1.5 PRO', desc: 'Улучшенная физика и детали', icon: '🎥', badge: 'ELITE' },
+                { id: 'seedance_1_0', name: 'Seedance 1.0 Fast', desc: 'Быстрая видео-генерация', icon: '🎞', badge: '' }
+            ];
+
+            const [model, setModel] = useState(models[0].id);
+            const [prompt, setPrompt] = useState('');
+            const [ratio, setRatio] = useState('9:16');
+
+            return (
+                <div className="view-anim">
+                    <div className="nav-back" onClick={() => setSubView('none')}>← Назад в Студию</div>
+                    <span className="section-label">Выберите спец-модель {type === 'photo' ? 'Фото' : 'Видео'}</span>
+                    <div style={{marginBottom:'20px'}}>
+                        {models.map(m => (
+                            <div key={m.id} className={`model-card ${model === m.id ? 'active' : ''}`} onClick={() => setModel(m.id)}>
+                                <div className="model-avatar">{m.icon}</div>
+                                <div className="model-info">
+                                    <h4>{m.name} {m.badge && <span className={`badge pro`}>{m.badge}</span>}</h4>
+                                    <p>{m.desc}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="settings-card">
+                        <span className="form-label">Формат</span>
+                        <div className="ratio-grid">
+                            {['1:1', '9:16', '16:9', '4:3', '3:4'].map(r => (
+                                <div key={r} className={`ratio-btn ${ratio === r ? 'active' : ''}`} onClick={() => setRatio(r)}>
+                                    <span>{r}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="form-group" style={{marginTop:'20px'}}>
+                        <textarea className="textarea" placeholder="Что создаем?" value={prompt} onChange={(e) => setPrompt(e.target.value)} />
+                    </div>
+
+                    <button className="btn-submit" onClick={() => onGo({type, model, ratio, prompt})}>
+                        <span>Запустить Магию ✨</span>
+                    </button>
+                </div>
+            );
+        };
+
         function App() {
             const [view, setView] = useState('main');
+            const [subView, setSubView] = useState('none'); // none, fun_photo, fun_video
             const [model, setModel] = useState('photo_pro');
             const [ratio, setRatio] = useState('9:16');
             const [quality, setQuality] = useState('720p');
@@ -431,7 +458,9 @@
                         <ChatView setView={setView} prompt={promptChat} setPrompt={setPromptChat} onGo={handleGo} />
                     )}
                     {view === 'faceswap' && (
-                        <FaceSwapView setView={setView} onGo={handleGo} />
+                        subView === 'none' ? <FaceSwapView setView={setView} setSubView={setSubView} /> :
+                        subView === 'fun_photo' ? <FunSelectionView type="photo" setSubView={setSubView} onGo={handleGo} /> :
+                        <FunSelectionView type="video" setSubView={setSubView} onGo={handleGo} />
                     )}
                 </div>
             );
