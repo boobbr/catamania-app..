@@ -101,41 +101,45 @@
 <body>
     <div id="root"></div>
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
+    <script type="text        const { useState, useEffect } = React;
 
         const PHOTO_MODELS = [
-            { id: 'banana_2_pro', name: 'Midjourney v6.1', desc: 'Золотой стандарт фото-искусства (Kie.ai)', icon: '🎨', badge: 'TOP' },
-            { id: 'grok_imagine', name: 'Grok Imagine', desc: 'MJ AI-аналог, быстро и качественно (Kie.ai)', icon: '🧠', badge: 'HOT' },
-            { id: 'banana_2', name: 'Nano Banana 2', desc: 'Ультра-быстрый FLUX 1.1 PRO', icon: '🚀', badge: 'NEW' },
-            { id: 'banana_pro_4k', name: 'Banana Pro 4K', desc: 'Высокое разрешение и детали (ApiYi)', icon: '✨', badge: '4K' },
-            { id: 'photo_pro', name: 'Photo PRO', desc: 'ByteDance Seedream 5.0 Luxe', icon: '💎', badge: 'PRO' },
-            { id: 'photo_std', name: 'Photo Standard', desc: 'ByteDance Seedream 4.5', icon: '🖼', badge: '' },
-            { id: 'banana_nano_pro', name: 'Nano Banana PRO', desc: 'FLUX Dev (PiAPI)', icon: '🍌', badge: 'PRO' },
-            { id: 'banana_nano_std', name: 'Nano Banana Std', desc: 'FLUX Schnell (PiAPI)', icon: '🍌', badge: '' },
-            { id: 'flux_schnell_together', name: 'FLUX Schnell', desc: 'Быстрый доступ (Together AI)', icon: '⚡', badge: '' },
-            { id: 'faceswap_photo', name: 'Face Swap Photo', desc: 'Замена лица на фото (Novita)', icon: '👤', badge: '' },
-            { id: 'chatgpt_photo', name: 'ChatGPT Photo', desc: 'Генерация от GPT (Laozhang)', icon: '💬', badge: '' }
+            { id: 'banana_group', name: '🍌 Nano Banana PRO', desc: 'Все модели Banana в одном месте', icon: '🍌', badge: 'DEALS', price: '4-14' },
+            { id: 'banana_2_pro', name: 'Midjourney v6.1', desc: 'Золотой стандарт фото-искусства (Kie.ai)', icon: '🎨', badge: 'TOP', price: '10' },
+            { id: 'grok_imagine', name: 'Grok Imagine', desc: 'MJ AI-аналог, быстро и качественно (Kie.ai)', icon: '🧠', badge: 'HOT', price: '10' },
+            { id: 'photo_pro', name: 'Фото ПРО', desc: 'Максимальное качество (Seedream 5.0)', icon: '💎', badge: 'PRO', price: '10' },
+            { id: 'photo_std', name: 'Фото Стандарт', desc: 'Классическое качество (Seedream 4.5)', icon: '🖼', badge: '', price: '10' },
+            { id: 'faceswap_photo', name: 'Face Swap Photo', desc: 'Замена лица на фото (Novita)', icon: '👤', badge: '', price: '16' }
+        ];
+
+        const BANANA_MODELS = [
+            { id: 'banana_2', name: 'Nano Banana 2', desc: 'Ультра-быстрый FLUX 1.1 PRO', icon: '🚀', badge: 'NEW', price: '14' },
+            { id: 'banana_pro_4k', name: 'Banana Pro 4K', desc: 'Высокое разрешение и детали', icon: '✨', badge: '4K', price: '12' },
+            { id: 'banana_nano_pro', name: 'Nano Banana PRO', desc: 'FLUX Dev (PiAPI)', icon: '🍌', badge: 'PRO', price: '10' },
+            { id: 'banana_nano_std', name: 'Nano Banana Std', desc: 'FLUX Schnell (PiAPI)', icon: '🍌', badge: '', price: '4' }
         ];
 
         const VIDEO_MODELS = [
-            { id: 'kling_3_0', name: 'Kling 3.0 Omni', desc: 'Вершина видео-генерации (Kie.ai)', icon: '🔥', badge: 'HOT' },
-            { id: 'kling_2_6', name: 'Kling 2.6', desc: 'Стабильность и физика (PiAPI)', icon: '⚡', badge: '' },
-            { id: 'sora_2_pro', name: 'Sora 2 PRO', desc: 'Профессиональное OpenAI Видео (Kie.ai)', icon: '🎬', badge: 'PRO' },
-            { id: 'sora_2', name: 'Sora 2', desc: 'Инновации от APIYI', icon: '🌈', badge: 'NEW' },
-            { id: 'veo_3_1', name: 'Veo 3.1 Fast', desc: 'Google AI Video (PiAPI)', icon: '💨', badge: '' },
-            { id: 'runway_gen4', name: 'Runway Gen4', desc: 'Элитный монтаж (Kie.ai)', icon: '✨', badge: '' },
-            { id: 'motion_control', name: 'Motion Control', desc: 'Управление движением (PiAPI)', icon: '🕹', badge: '' },
-            { id: 'seedance_2_0', name: 'Seedance 2.0', desc: 'Новое поколение ByteDance', icon: '🌊', badge: 'BETA' },
-            { id: 'seedance_1_5', name: 'Seedance 1.5 PRO', desc: 'Улучшенная версия (BytePlus)', icon: '🎥', badge: '' },
-            { id: 'seedance_1_0', name: 'Seedance 1.0 Fast', desc: 'Быстрое видео (BytePlus)', icon: '🎞', badge: '' },
-            { id: 'faceswap_video', name: 'Face Swap Video', desc: 'Замена лица на видео (Novita)', icon: '👤', badge: '' }
+            { id: 'kling_3_0', name: 'Kling 3.0 Omni', desc: 'Вершина видео-генерации (Kie.ai)', icon: '🔥', badge: 'HOT', price: '45-90' },
+            { id: 'kling_2_6', name: 'Kling 2.6', desc: 'Стабильность и физика (PiAPI)', icon: '⚡', badge: '', price: '45-90' },
+            { id: 'sora_2_pro', name: 'Sora 2 PRO', desc: 'Профессиональное OpenAI Видео', icon: '🎬', badge: 'PRO', price: '45-90' },
+            { id: 'sora_2', name: 'Sora 2', desc: 'Инновации от APIYI', icon: '🌈', badge: 'NEW', price: '45-90' },
+            { id: 'veo_3_1', name: 'Veo 3.1 Fast', desc: 'Google AI Video (PiAPI)', icon: '💨', badge: '', price: '45-90' },
+            { id: 'seedance_2_0', name: 'Seedance 2.0', desc: 'Новое поколение ByteDance', icon: '🌊', badge: 'BETA', price: '45' },
+            { id: 'seedance_1_5', name: 'Видео ПРО', desc: 'Seedance 1.5 PRO', icon: '🎥', badge: 'PRO', price: '45' },
+            { id: 'seedance_1_0', name: 'Видео Стандарт', desc: 'Seedance 1.0 Fast', icon: '🎞', badge: '', price: '45' },
+            { id: 'faceswap_video', name: 'Face Swap Video', desc: 'Замена лица на видео (Novita)', icon: '👤', badge: '', price: '50' }
+        ];
+
+        const MOTION_MODELS = [
+            { id: 'motion_kling_3', name: 'Motion Kling 3.0', desc: 'Ультимативное управление (Kie.ai)', icon: '🕹', badge: 'HOT', price: '45-90' },
+            { id: 'motion_kling_2', name: 'Motion Kling 2.6', desc: 'Профессиональное движение (PiAPI)', icon: '🕹', badge: '', price: '45-90' }
         ];
 
         const MainMenu = ({ setView }) => (
             <div className="view-anim">
                 <div className="header">
-                    <h1>КОТОМАНИЯ <span style={{color:'var(--primary)'}}>v7.0</span></h1>
+                    <h1>КОТОМАНИЯ <span style={{color:'var(--primary)'}}>v8.0</span></h1>
                     <p>Твой ультимативный ИИ-комбайн 🦄</p>
                 </div>
                 <div className="grid-main">
@@ -143,14 +147,21 @@
                         <span className="hero-icon">🎨</span>
                         <div className="hero-text">
                             <h3>ФОТО СТУДИЯ</h3>
-                            <p>Создавай шедевры: MJ, FLUX, Seedream</p>
+                            <p>Создавай шедевры: 🍌Nano banana, Midjourney, FLUX</p>
                         </div>
                     </div>
                     <div className="hero-btn purple" onClick={() => setView('video')}>
                         <span className="hero-icon">🎬</span>
                         <div className="hero-text">
                             <h3>ВИДЕО СТУДИЯ</h3>
-                            <p>Генерация: Kling, Sora, Seedance</p>
+                            <p>Сгенерируй видео: Kling 3.0, Sora 2 PRO, Seedance 2.0</p>
+                        </div>
+                    </div>
+                    <div className="hero-btn purple" onClick={() => setView('motion')} style={{background: 'linear-gradient(135deg, #6366F1 0%, #4F46E5 100%)'}}>
+                        <span className="hero-icon">🕹</span>
+                        <div className="hero-text">
+                            <h3>MOTION CONTROL</h3>
+                            <p>Kling 2.6 & 3.0 — Полное управление движением</p>
                         </div>
                     </div>
                     <div className="hero-btn dark" onClick={() => setView('cartoon')} style={{border: '2px dashed var(--accent)'}}>
@@ -160,36 +171,30 @@
                             <p>Эксклюзивный раздел для создания мультиков ✨</p>
                         </div>
                     </div>
-                    <div className="hero-btn dark" onClick={() => setView('chat')}>
-                        <span className="hero-icon">💬</span>
-                        <div className="hero-text">
-                            <h3>CHAT GPT AI</h3>
-                            <p>Умный помощник и копирайтер</p>
+                    <div className="hero-btn dark" onClick={() => setView('chat')} style={{background: '#111827'}}>
+                        <div style={{display:'flex', alignItems:'center', gap:'12px'}}>
+                            <div style={{width:'36px', height:'36px', background:'#fff', borderRadius:'8px', display:'flex', alignItems:'center', justifyCenter:'center', fontSize:'22px'}}>🤖</div>
+                            <div className="hero-text">
+                                <h3 style={{fontSize:'18px'}}>ChatGPT</h3>
+                                <p>Умный помощник и копирайтер</p>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
                 <span className="section-label">Твои Инструменты</span>
-                <div className="model-card" onClick={() => setView('banana')}>
-                    <div className="model-avatar">🍌</div>
-                    <div className="model-info">
-                        <h4>Линейка Banana</h4>
-                        <p>Быстрые и доступные модели генерации</p>
-                    </div>
-                </div>
-
                 <div className="model-card" onClick={() => setView('faceswap')} style={{background: 'linear-gradient(135deg, #EEF2FF 0%, #F5F3FF 100%)', border: '1px solid #C4B5FD'}}>
                     <div className="model-avatar">🎭</div>
                     <div className="model-info">
                         <h4>ВЕСЕЛЬЕ [Студия]</h4>
-                        <p>Замена лиц, аватары и спецэффекты</p>
+                        <p>Seedance & Seedream элитные модели</p>
                     </div>
                 </div>
             </div>
         );
 
-        const SelectionScreen = ({ type, setView, model, setModel, ratio, setRatio, quality, setQuality, duration, setDuration, prompt, setPrompt, onGo }) => {
-            const models = type === 'photo' ? PHOTO_MODELS : VIDEO_MODELS;
+        const SelectionScreen = ({ type, setView, model, setModel, ratio, setRatio, quality, setQuality, duration, setDuration, prompt, setPrompt, onGo, setSubView }) => {
+            const models = type === 'photo' ? PHOTO_MODELS : (type === 'motion' ? MOTION_MODELS : VIDEO_MODELS);
             
             return (
                 <div className="view-anim">
@@ -198,10 +203,21 @@
                     <span className="section-label">Выберите нейросеть</span>
                     <div style={{maxHeight:'320px', overflowY:'auto', paddingRight:'4px', marginBottom:'20px'}}>
                         {models.map(m => (
-                            <div key={m.id} className={`model-card ${model === m.id ? 'active' : ''}`} onClick={() => setModel(m.id)}>
+                            <div key={m.id} className={`model-card ${model === m.id ? 'active' : ''}`} 
+                                 onClick={() => {
+                                     if (m.id === 'banana_group') {
+                                         setSubView('banana');
+                                         setView('sub_selection');
+                                     } else {
+                                         setModel(m.id);
+                                     }
+                                 }}>
                                 <div className="model-avatar">{m.icon}</div>
                                 <div className="model-info">
-                                    <h4>{m.name} {m.badge && <span className={`badge ${m.badge.toLowerCase()}`}>{m.badge}</span>}</h4>
+                                    <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                                        <h4>{m.name} {m.badge && <span className={`badge ${m.badge.toLowerCase()}`}>{m.badge}</span>}</h4>
+                                        <span style={{fontSize:'11px', fontWeight:'800', color:'var(--primary-dark)'}}>💰 {m.price}❤️</span>
+                                    </div>
                                     <p>{m.desc}</p>
                                 </div>
                             </div>
@@ -209,7 +225,7 @@
                     </div>
 
                     <div className="settings-card">
-                        {type === 'video' && (
+                        {(type === 'video' || type === 'motion') && (
                             <div className="form-group">
                                 <span className="form-label">Параметры видео</span>
                                 <div className="tab-select">
@@ -245,12 +261,59 @@
             );
         };
 
+        const SpecialSelectionView = ({ type, setView, onGo, setSubView }) => {
+            const models = type === 'banana' ? BANANA_MODELS : [];
+            const [model, setModel] = useState(models[0]?.id);
+            const [prompt, setPrompt] = useState('');
+            const [ratio, setRatio] = useState('1:1');
+
+            return (
+                <div className="view-anim">
+                    <div className="nav-back" onClick={() => setView('photo')}>← Назад к Фото</div>
+                    <span className="section-label">Выберите модель Banana</span>
+                    <div style={{marginBottom:'20px'}}>
+                        {models.map(m => (
+                            <div key={m.id} className={`model-card ${model === m.id ? 'active' : ''}`} onClick={() => setModel(m.id)}>
+                                <div className="model-avatar">{m.icon}</div>
+                                <div className="model-info">
+                                    <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                                        <h4>{m.name} {m.badge && <span className={`badge pro`}>{m.badge}</span>}</h4>
+                                        <span style={{fontSize:'11px', fontWeight:'800', color:'var(--primary-dark)'}}>💰 {m.price}❤️</span>
+                                    </div>
+                                    <p>{m.desc}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="settings-card">
+                        <span className="form-label">Формат</span>
+                        <div className="ratio-grid">
+                            {['1:1', '9:16', '16:9'].map(r => (
+                                <div key={r} className={`ratio-btn ${ratio === r ? 'active' : ''}`} onClick={() => setRatio(r)}>
+                                    <span>{r}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="form-group" style={{marginTop:'20px'}}>
+                        <textarea className="textarea" placeholder="Что создаем?" value={prompt} onChange={(e) => setPrompt(e.target.value)} />
+                    </div>
+
+                    <button className="btn-submit" onClick={() => onGo({type: 'photo', model, ratio, prompt})}>
+                        <span>Создать Банан 🍌</span>
+                    </button>
+                </div>
+            );
+        };
+
         const CartoonView = ({ setView, model, setModel, ratio, setRatio, prompt, setPrompt, onGo }) => {
             const CARTOON_MODELS = [
-                { id: 'cartoon_pixar', name: 'Pixar Style', desc: '3D анимация Disney/Pixar', icon: '🏰', style: 'pixar' },
-                { id: 'cartoon_anime', name: 'Anime Style', desc: 'Японская анимация (Niji)', icon: '⛩', style: 'anime' },
-                { id: 'cartoon_clay', name: 'Claymation', desc: 'Пластилиновый мультфильм', icon: '🧸', style: 'clay' },
-                { id: 'cartoon_3d', name: 'Modern 3D', desc: 'Стиль современных игр', icon: '🎮', style: 'game' }
+                { id: 'cartoon_pixar', name: 'Pixar Style', desc: '3D анимация Disney/Pixar', icon: '🏰', style: 'pixar', price: '12' },
+                { id: 'cartoon_anime', name: 'Anime Style', desc: 'Японская анимация (Niji)', icon: '⛩', style: 'anime', price: '12' },
+                { id: 'cartoon_clay', name: 'Claymation', desc: 'Пластилиновый мультфильм', icon: '🧸', style: 'clay', price: '12' },
+                { id: 'cartoon_3d', name: 'Modern 3D', desc: 'Стиль современных игр', icon: '🎮', style: 'game', price: '12' }
             ];
 
             return (
@@ -270,7 +333,7 @@
                                 <span style={{fontSize:24}}>{m.icon}</span>
                                 <div className="hero-text">
                                     <h4 style={{fontSize:14, margin:0}}>{m.name}</h4>
-                                    <p style={{fontSize:10, margin:0, opacity:0.7}}>{m.desc}</p>
+                                    <span style={{fontSize:'9px', color: model === m.id ? '#fff' : 'var(--primary-dark)'}}>💰 {m.price}❤️</span>
                                 </div>
                             </div>
                         ))}
@@ -347,11 +410,11 @@
 
         const FunSelectionView = ({ type, setSubView, onGo }) => {
             const models = type === 'photo' ? [
-                { id: 'photo_pro', name: 'Фото ПРО', desc: 'Максимальное качество и детали (Seedream 5.0)', icon: '💎', badge: 'PRO' },
-                { id: 'photo_std', name: 'Фото Стандарт', desc: 'Классическое качество (Seedream 4.5)', icon: '🖼', badge: '' }
+                { id: 'photo_pro', name: 'Фото ПРО', desc: 'Максимальное качество и детали (Seedream 5.0)', icon: '💎', badge: 'PRO', price: '10' },
+                { id: 'photo_std', name: 'Фото Стандарт', desc: 'Классическое качество (Seedream 4.5)', icon: '🖼', badge: '', price: '10' }
             ] : [
-                { id: 'seedance_1_5', name: 'Видео ПРО', desc: 'Улучшенная физика и детали (Seedance 1.5)', icon: '🎥', badge: 'ELITE' },
-                { id: 'seedance_1_0', name: 'Видео Стандарт', desc: 'Быстрая видео-генерация (Seedance 1.0)', icon: '🎞', badge: '' }
+                { id: 'seedance_1_5', name: 'Видео ПРО', desc: 'Улучшенная физика и детали (Seedance 1.5)', icon: '🎥', badge: 'ELITE', price: '45-90' },
+                { id: 'seedance_1_0', name: 'Видео Стандарт', desc: 'Быстрая видео-генерация (Seedance 1.0)', icon: '🎞', badge: '', price: '45' }
             ];
 
             const [model, setModel] = useState(models[0].id);
@@ -367,7 +430,10 @@
                             <div key={m.id} className={`model-card ${model === m.id ? 'active' : ''}`} onClick={() => setModel(m.id)}>
                                 <div className="model-avatar">{m.icon}</div>
                                 <div className="model-info">
-                                    <h4>{m.name} {m.badge && <span className={`badge pro`}>{m.badge}</span>}</h4>
+                                    <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                                        <h4>{m.name} {m.badge && <span className={`badge pro`}>{m.badge}</span>}</h4>
+                                        <span style={{fontSize:'11px', fontWeight:'800', color:'var(--primary-dark)'}}>💰 {m.price}❤️</span>
+                                    </div>
                                     <p>{m.desc}</p>
                                 </div>
                             </div>
@@ -398,7 +464,7 @@
 
         function App() {
             const [view, setView] = useState('main');
-            const [subView, setSubView] = useState('none'); // none, fun_photo, fun_video
+            const [subView, setSubView] = useState('none'); // none, fun_photo, fun_video, banana
             const [model, setModel] = useState('photo_pro');
             const [ratio, setRatio] = useState('9:16');
             const [quality, setQuality] = useState('720p');
@@ -419,7 +485,7 @@
             }, []);
 
             const handleGo = (data) => {
-                const payload = { ...data, v: '7.0' };
+                const payload = { ...data, v: '8.0' };
                 if (window.Telegram && window.Telegram.WebApp) {
                     window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
                     window.Telegram.WebApp.sendData(JSON.stringify(payload));
@@ -435,7 +501,7 @@
                     {view === 'photo' && (
                         <SelectionScreen 
                             type="photo" setView={setView} model={model} setModel={setModel} 
-                            ratio={ratio} setRatio={setRatio} prompt={promptPhoto} setPrompt={setPromptPhoto} onGo={handleGo}
+                            ratio={ratio} setRatio={setRatio} prompt={promptPhoto} setPrompt={setPromptPhoto} onGo={handleGo} setSubView={setSubView}
                         />
                     )}
                     {view === 'video' && (
@@ -445,11 +511,15 @@
                             duration={duration} setDuration={setDuration} prompt={promptVideo} setPrompt={setPromptVideo} onGo={handleGo}
                         />
                     )}
-                    {view === 'banana' && (
+                    {view === 'motion' && (
                         <SelectionScreen 
-                            type="photo" setView={setView} model={model} setModel={setModel} 
-                            ratio={ratio} setRatio={setRatio} prompt={promptBanana} setPrompt={setPromptBanana} onGo={handleGo}
+                            type="motion" setView={setView} model={model} setModel={setModel} 
+                            ratio={ratio} setRatio={setRatio} quality={quality} setQuality={setQuality}
+                            duration={duration} setDuration={setDuration} prompt={promptVideo} setPrompt={setPromptVideo} onGo={handleGo}
                         />
+                    )}
+                    {view === 'sub_selection' && (
+                        <SpecialSelectionView type={subView} setView={setView} onGo={handleGo} setSubView={setSubView} />
                     )}
                     {view === 'cartoon' && (
                         <CartoonView setView={setView} model={model} setModel={setModel} ratio={ratio} setRatio={setRatio} prompt={promptCartoon} setPrompt={setPromptCartoon} onGo={handleGo} />
