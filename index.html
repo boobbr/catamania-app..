@@ -105,43 +105,43 @@
         const { useState, useEffect } = React;
 
         const PHOTO_MODELS = [
-            { id: 'banana_group', name: '🍌 Nano Banana PRO', desc: 'Все модели Banana в одном месте', icon: '🍌', badge: 'DEALS', price: '4-14' },
-            { id: 'banana_2_pro', name: 'Midjourney v6.1', desc: 'Золотой стандарт фото-искусства (Kie.ai)', icon: '🎨', badge: 'TOP', price: '10' },
-            { id: 'grok_imagine', name: 'Grok Imagine', desc: 'MJ AI-аналог, быстро и качественно (Kie.ai)', icon: '🧠', badge: 'HOT', price: '10' },
-            { id: 'photo_pro', name: 'Фото ПРО', desc: 'Максимальное качество (Seedream 5.0)', icon: '💎', badge: 'PRO', price: '10' },
-            { id: 'photo_std', name: 'Фото Стандарт', desc: 'Классическое качество (Seedream 4.5)', icon: '🖼', badge: '', price: '10' },
-            { id: 'faceswap_photo', name: 'Face Swap Photo', desc: 'Замена лица на фото (Novita)', icon: '👤', badge: '', price: '16' }
+            { id: 'banana_group', name: '🍌 Nano Banana PRO', desc: 'Все модели Banana в одном месте', icon: '🍌', badge: 'DEALS', price: '1-5' },
+            { id: 'banana_2_pro', name: 'Midjourney v6.1', desc: 'Золотой стандарт фото-искусства, 5-6 фото за 1 раз!', icon: '🎨', badge: 'TOP', price: '2' },
+            { id: 'grok_imagine', name: 'Grok Imagine', desc: 'Реалистичный AI-аналог, высокая скорость и детализация (Kie.ai)', icon: '🧠', badge: 'HOT', price: '2' },
+            { id: 'photo_pro', name: 'Seedream 5.0 Luxe', desc: 'Максимальное качество и детализация', icon: '💎', badge: 'LUXE', price: '4' },
+            { id: 'photo_std', name: 'Seedream 4.5 Standard', desc: 'Классическое качество ByteDance', icon: '🖼', badge: '', price: '4' },
+            { id: 'faceswap_photo', name: 'Face Swap Photo', desc: 'Замена лица на фото (Novita)', icon: '👤', badge: '', price: '2' }
         ];
 
         const BANANA_MODELS = [
-            { id: 'banana_2', name: 'Nano Banana 2', desc: 'Ультра-быстрый FLUX 1.1 PRO', icon: '🚀', badge: 'NEW', price: '14' },
-            { id: 'banana_pro_4k', name: 'Banana Pro 4K', desc: 'Высокое разрешение и детали', icon: '✨', badge: '4K', price: '12' },
-            { id: 'banana_nano_pro', name: 'Nano Banana PRO', desc: 'FLUX Dev (PiAPI)', icon: '🍌', badge: 'PRO', price: '10' },
-            { id: 'banana_nano_std', name: 'Nano Banana Std', desc: 'FLUX Schnell (PiAPI)', icon: '🍌', badge: '', price: '4' }
+            { id: 'banana_ultra', name: 'Nano Banana ULTRA', desc: 'Flux-Pro-1.1-Ultra — Лучшее в мире', icon: '💎', badge: 'ULTRA', price: '5' },
+            { id: 'banana_2', name: 'Nano Banana 2', desc: 'Flux-Pro-1.1 — Скорость и качество', icon: '🚀', badge: 'NEW', price: '4' },
+            { id: 'banana_nano_pro', name: 'Nano Banana Pro', desc: 'Flux-Dev — Умная генерация', icon: '🍌', badge: 'PRO', price: '2' },
+            { id: 'banana_nano_std', name: 'Nano banana', desc: 'Flux-Schnell — Быстро и дешево', icon: '🍌', badge: '', price: '1' }
         ];
 
         const VIDEO_MODELS = [
-            { id: 'kling_3_0', name: 'Kling 3.0 Omni', desc: 'Вершина видео-генерации (Kie.ai)', icon: '🔥', badge: 'HOT', price: '45-90' },
-            { id: 'kling_2_6', name: 'Kling 2.6', desc: 'Стабильность и физика (PiAPI)', icon: '⚡', badge: '', price: '45-90' },
-            { id: 'sora_2_pro', name: 'Sora 2 PRO', desc: 'Профессиональное OpenAI Видео', icon: '🎬', badge: 'PRO', price: '45-90' },
-            { id: 'sora_2', name: 'Sora 2', desc: 'Инновации от APIYI', icon: '🌈', badge: 'NEW', price: '45-90' },
-            { id: 'veo_3_1', name: 'Veo 3.1 Fast', desc: 'Google AI Video (PiAPI)', icon: '💨', badge: '', price: '45-90' },
-            { id: 'seedance_2_0', name: 'Seedance 2.0', desc: 'Новое поколение ByteDance', icon: '🌊', badge: 'BETA', price: '45' },
-            { id: 'seedance_1_5', name: 'Видео ПРО', desc: 'Seedance 1.5 PRO', icon: '🎥', badge: 'PRO', price: '45' },
-            { id: 'seedance_1_0', name: 'Видео Стандарт', desc: 'Seedance 1.0 Fast', icon: '🎞', badge: '', price: '45' },
-            { id: 'faceswap_video', name: 'Face Swap Video', desc: 'Замена лица на видео (Novita)', icon: '👤', badge: '', price: '50' }
+            { id: 'kling_3_0', name: 'Kling 3.0 Omni', desc: 'Вершина видео-генерации (Kie.ai)', icon: '🔥', badge: 'HOT', price: '25-50' },
+            { id: 'kling_2_6', name: 'Kling 2.6', desc: 'Стабильность и физика (PiAPI)', icon: '⚡', badge: '', price: '25-50' },
+            { id: 'sora_2_pro', name: 'Sora 2 PRO', desc: 'Профессиональное OpenAI Видео', icon: '🎬', badge: 'PRO', price: '25-50' },
+            { id: 'sora_2', name: 'Sora 2', desc: 'Инновации от APIYI', icon: '🌈', badge: 'NEW', price: '25-50' },
+            { id: 'veo_3_1', name: 'Veo 3.1 Fast', desc: 'Google AI Video (PiAPI)', icon: '💨', badge: '', price: '25-50' },
+            { id: 'seedance_2_0', name: 'Seedance 2.0', desc: 'Новое поколение ByteDance', icon: '🌊', badge: 'BETA', price: '15' },
+            { id: 'seedance_1_5', name: 'Seedance 1.5 PRO', desc: 'Профессиональное качество видео', icon: '🎥', badge: 'PRO', price: '15' },
+            { id: 'seedance_1_0', name: 'Seedance 1.0 Fast', desc: 'Быстрая генерация ByteDance', icon: '🎞', badge: '', price: '10' },
+            { id: 'faceswap_video', name: 'Face Swap Video', desc: 'Замена лица на видео (Novita)', icon: '👤', badge: '', price: '20' }
         ];
 
         const MOTION_MODELS = [
-            { id: 'motion_kling_3', name: 'Motion Kling 3.0', desc: 'Ультимативное управление (Kie.ai)', icon: '🕹', badge: 'HOT', price: '45-90' },
-            { id: 'motion_kling_2', name: 'Motion Kling 2.6', desc: 'Профессиональное движение (PiAPI)', icon: '🕹', badge: '', price: '45-90' }
+            { id: 'motion_kling_3', name: 'Motion Kling 3.0', desc: 'Ультимативное управление (Kie.ai)', icon: '🕹', badge: 'HOT', price: '30-60' },
+            { id: 'motion_kling_2', name: 'Motion Kling 2.6', desc: 'Профессиональное движение (PiAPI)', icon: '🕹', badge: '', price: '30-60' }
         ];
 
         const MainMenu = ({ setView }) => (
             <div className="view-anim">
                 <div className="header">
-                    <h1>КОТОМАНИЯ <span style={{color:'var(--primary)'}}>v8.0</span></h1>
-                    <p>Твой ультимативный ИИ-комбайн 🦄</p>
+                    <h1>КОТОМАНИЯ <span style={{color:'var(--primary)'}}>v8.5</span></h1>
+                    <p>Твой ультимативный ИИ-комбайн [PRO] 🦄</p>
                 </div>
                 <div className="grid-main">
                     <div className="hero-btn blue" onClick={() => setView('photo')}>
@@ -174,7 +174,11 @@
                     </div>
                     <div className="hero-btn dark" onClick={() => setView('chat')} style={{background: '#111827'}}>
                         <div style={{display:'flex', alignItems:'center', gap:'12px'}}>
-                            <div style={{width:'36px', height:'36px', background:'#fff', borderRadius:'8px', display:'flex', alignItems:'center', justifyCenter:'center', fontSize:'22px'}}>🤖</div>
+                            <div style={{width:'36px', height:'36px', background:'#fff', borderRadius:'8px', display:'flex', alignItems:'center', justifyContent:'center', padding:'6px'}}>
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{width:'100%', height:'100%'}}>
+                                    <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5153-4.9066 6.0462 6.0462 0 0 0-4.7471-3.1243 5.982 5.982 0 0 0-4.6927 1.0623 5.9834 5.9834 0 0 0-7.3113 0 5.982 5.982 0 0 0-4.6927-1.0623 6.0462 6.0462 0 0 0-4.7471 3.1243 5.9847 5.9847 0 0 0-.5153 4.9066 6.0106 6.0106 0 0 0 1.0623 4.6927 6.0106 6.0106 0 0 0-1.0623 4.6927 5.9847 5.9847 0 0 0 .5153 4.9066 6.0462 6.0462 0 0 0 4.7471 3.1243 5.982 5.982 0 0 0 4.6927-1.0623 5.9834 5.9834 0 0 0 7.3113 0 5.982 5.982 0 0 0 4.6927 1.0623 6.0462 6.0462 0 0 0 4.7471-3.1243 5.9847 5.9847 0 0 0 .5153-4.9066 6.0106 6.0106 0 0 0-1.0623-4.6927 6.0106 6.0106 0 0 0 1.0623-4.6927ZM13.8477 21.0113a4.341 4.341 0 0 1-3.6954 0l-.364-.1765-.364.1765a4.341 4.341 0 0 1-3.6954 0 4.3683 4.3683 0 0 1-2.2612-3.4144 4.321 4.321 0 0 1 .3748-3.56l.1765-.364-.1765-.364a4.321 4.321 0 0 1-.3748-3.56 4.3683 4.3683 0 0 1 2.2612-3.4144 4.341 4.341 0 0 1 3.6954 0l.364.1765.364-.1765a4.341 4.341 0 0 1 3.6954 0 4.3683 4.3683 0 0 1 2.2612 3.4144 4.321 4.321 0 0 1-.3748 3.56l-.1765.364.1765.364a4.321 4.321 0 0 1 .3748 3.56 4.3683 4.3683 0 0 1-2.2612 3.4144ZM12 10.5a1.5 1.5 0 1 0 1.5 1.5 1.5 1.5 0 0 0-1.5-1.5Z" fill="#10a37f"/>
+                                </svg>
+                            </div>
                             <div className="hero-text">
                                 <h3 style={{fontSize:'18px'}}>ChatGPT</h3>
                                 <p>Умный помощник и копирайтер</p>
@@ -242,7 +246,7 @@
                         <div className="form-group" style={{marginBottom:0}}>
                             <span className="form-label">Формат изображения</span>
                             <div className="ratio-grid">
-                                {['1:1', '9:16', '16:9', '4:3', '3:4'].map(r => (
+                                {['1:1', '9:16', '16:9', '2:3', '3:2'].map(r => (
                                     <div key={r} className={`ratio-btn ${ratio === r ? 'active' : ''}`} onClick={() => setRatio(r)}>
                                         <span>{r}</span>
                                     </div>
@@ -411,11 +415,11 @@
 
         const FunSelectionView = ({ type, setSubView, onGo }) => {
             const models = type === 'photo' ? [
-                { id: 'photo_pro', name: 'Фото ПРО', desc: 'Максимальное качество и детали (Seedream 5.0)', icon: '💎', badge: 'PRO', price: '10' },
-                { id: 'photo_std', name: 'Фото Стандарт', desc: 'Классическое качество (Seedream 4.5)', icon: '🖼', badge: '', price: '10' }
+                { id: 'photo_pro', name: 'Seedream 5.0 Luxe', desc: 'Максимальное качество и детализация', icon: '💎', badge: 'LUXE', price: '4' },
+                { id: 'photo_std', name: 'Seedream 4.5 Standard', desc: 'Классическое качество ByteDance', icon: '🖼', badge: '', price: '4' }
             ] : [
-                { id: 'seedance_1_5', name: 'Видео ПРО', desc: 'Улучшенная физика и детали (Seedance 1.5)', icon: '🎥', badge: 'ELITE', price: '45-90' },
-                { id: 'seedance_1_0', name: 'Видео Стандарт', desc: 'Быстрая видео-генерация (Seedance 1.0)', icon: '🎞', badge: '', price: '45' }
+                { id: 'seedance_1_5', name: 'Seedance 1.5 PRO', desc: 'Профессиональное качество видео', icon: '🎥', badge: 'ELITE', price: '15' },
+                { id: 'seedance_1_0', name: 'Seedance 1.0 Fast', desc: 'Быстрая генерация ByteDance', icon: '🎞', badge: '', price: '10' }
             ];
 
             const [model, setModel] = useState(models[0].id);
@@ -444,7 +448,7 @@
                     <div className="settings-card">
                         <span className="form-label">Формат</span>
                         <div className="ratio-grid">
-                            {['1:1', '9:16', '16:9', '4:3', '3:4'].map(r => (
+                            {['1:1', '9:16', '16:9', '2:3', '3:2'].map(r => (
                                 <div key={r} className={`ratio-btn ${ratio === r ? 'active' : ''}`} onClick={() => setRatio(r)}>
                                     <span>{r}</span>
                                 </div>
